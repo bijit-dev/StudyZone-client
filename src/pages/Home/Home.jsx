@@ -9,6 +9,7 @@ import 'swiper/css/pagination';
 import 'swiper/css/navigation';
 // import required modules
 import { Autoplay, Pagination, Navigation } from 'swiper/modules';
+import StudySessions from "./StudySessions";
 
 const Home = () => {
     return (
@@ -34,7 +35,8 @@ const Home = () => {
 
             {/* available study session */}
             <section className="py-12 container mx-auto px-4">
-                <h1 className="font-bold text-3xl text-center capitalize text">available study session</h1>
+                <h1 className="font-bold text-3xl text-center capitalize text-primary">available study session</h1>
+                <StudySessions />
             </section>
         </div>
     );
