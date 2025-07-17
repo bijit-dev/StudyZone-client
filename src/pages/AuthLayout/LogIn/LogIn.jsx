@@ -1,7 +1,41 @@
-import React from "react";
-import { Link } from "react-router";
+import { Link, useLocation, useNavigate } from "react-router";
+import useAuth from "../../../hooks/useAuth";
+import { useForm } from "react-hook-form";
+import Swal from "sweetalert2";
+import { useState } from "react";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
+import SocialLogin from "../SocialLogin/SocialLogin";
 
 const LogIn = () => {
+
+    const [showPassword, setShowPassword] = useState(false);
+    const { signIn } = useAuth();
+    const { register, handleSubmit } = useForm();
+    const location = useLocation();
+    const navigate = useNavigate();
+    const from = location.state?.from || '/';
+
+    const onSubmit = data => {
+        signIn(data.email, data.password)
+            .then(() => {
+                navigate(from);
+                Swal.fire({
+                    title: "Login successfully!",
+                    icon: "success",
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+
+            }).catch(() => {
+                Swal.fire({
+                    title: "Login failed! please try again.",
+                    icon: "error",
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+            });
+    }
+
     return (
         <div className="min-h-[80vh] flex items-center justify-center py-4">
             <div className="w-full max-w-md bg-white rounded-2xl shadow-lg p-8 ">
@@ -12,12 +46,13 @@ const LogIn = () => {
                 </div>
 
                 {/* Form */}
-                <form className="space-y-6">
+                <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
                     {/* Email */}
                     <div>
                         <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
                         <input
                             type="email"
+                            {...register('email')}
                             placeholder="example@email.com"
                             className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
                             required
@@ -25,14 +60,21 @@ const LogIn = () => {
                     </div>
 
                     {/* Password */}
-                    <div>
+                    <div className="relative">
                         <label className="block text-sm font-medium text-gray-700 mb-1">Password</label>
                         <input
-                            type="password"
+                            type={showPassword ? "text" : "password"}
+                            {...register('password')}
                             placeholder="••••••••"
                             className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
                             required
                         />
+                        <span
+                            className="absolute right-3 top-[38px] cursor-pointer text-gray-500"
+                            onClick={() => setShowPassword(!showPassword)}
+                        >
+                            {showPassword ? <FaEyeSlash /> : <FaEye />}
+                        </span>
                     </div>
 
                     {/* Remember Me + Forgot Password */}
@@ -41,9 +83,9 @@ const LogIn = () => {
                             <input type="checkbox" className="form-checkbox text-indigo-600" />
                             Remember me
                         </label>
-                        <a href="#" className="text-indigo-600 hover:underline">
+                        <Link to="#" className="text-indigo-600 hover:underline">
                             Forgot password?
-                        </a>
+                        </Link>
                     </div>
 
                     {/* Login Button */}
@@ -62,6 +104,8 @@ const LogIn = () => {
                         Register
                     </Link>
                 </p>
+
+                <SocialLogin />
             </div>
         </div>
     );

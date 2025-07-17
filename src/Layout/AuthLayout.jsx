@@ -6,7 +6,7 @@ import animationData from '../assets/json/RegesterLottie.json';
 
 const AuthLayout = () => {
     return (
-        <div className=" container mx-auto py-4 lg:p-8 bg-base-200">
+        <div className=" container mx-auto py-4 lg:px-8 bg-base-200">
             <div>
                 <StudyZoneLogo />
             </div>

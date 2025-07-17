@@ -1,14 +1,25 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
-import { Link } from "react-router";
+import { Link, useLocation, useNavigate } from "react-router";
+import useAuth from "../../../hooks/useAuth";
+import Swal from "sweetalert2";
+import { auth } from "../../../firebase/firebase.init";
+import { updateProfile } from "firebase/auth";
+import SocialLogin from "../SocialLogin/SocialLogin";
+import useAxios from "../../../hooks/useAxios ";
 
 const Register = () => {
+    const { createUser } = useAuth();
     const [photoURL, setPhotoURL] = useState("");
     const [uploading, setUploading] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
     const [passwordError, setPasswordError] = useState("");
+    const axiosInstance = useAxios();
+    const location = useLocation();
+    const navigate = useNavigate();
+    const from = location.state?.from || '/';
 
     const imgbbApiKey = "3c823c20841b57865bed1f6729b05fca";
 
@@ -42,10 +53,12 @@ const Register = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
         const form = e.target;
+        const role = form.role.value;
         const fullName = form.fullName.value;
         const email = form.email.value;
         const password = form.password.value;
         const confirmPassword = form.confirmPassword.value;
+
 
         if (password !== confirmPassword) {
             setPasswordError("Passwords do not match.");
@@ -60,14 +73,55 @@ const Register = () => {
         }
 
         setPasswordError(""); // Clear previous error
-        form.reset();
-        setPhotoURL(""); // Reset photo URL after successful registration
-        
-        const user = { fullName, email, photoURL, password };
-        
-        console.log("User registered:", user);
 
-        // 🛡 Register logic here (e.g., Firebase/Auth backend)
+        // createUser
+        createUser(email, password)
+            .then(() => {
+                navigate(from)
+
+                // update user profile
+                const profile = {
+                    displayName: fullName,
+                    photoURL: photoURL,
+                }
+
+                updateProfile(auth.currentUser, profile)
+                    .then(async () => {
+
+                        // update userinfo in the database
+                        const userInfo = {
+                            email: email,
+                            role: role, // default role
+                            created_at: new Date().toISOString(),
+                            last_log_in: new Date().toISOString()
+                        }
+                        // Check if user already exists
+                        await axiosInstance.post('/users', userInfo);
+
+                        Swal.fire({
+                            title: "Login successfully!",
+                            icon: "success",
+                            showConfirmButton: false,
+                            timer: 1500
+                        });
+                        form.reset();
+                        setPhotoURL("");
+                    }).catch(() => {
+                        Swal.fire({
+                            title: "Profile update failed! please try again.",
+                            icon: "error",
+                            showConfirmButton: false,
+                            timer: 1500
+                        });
+                    });
+            }).catch(() => {
+                Swal.fire({
+                    title: "Login failed! please try again.",
+                    icon: "error",
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+            });
     };
 
     return (
@@ -78,6 +132,37 @@ const Register = () => {
                 </div>
 
                 <form onSubmit={handleSubmit} className="space-y-5">
+
+                    {/* User Role */}
+                    <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                            Register As
+                        </label>
+                        <div className="flex items-center gap-4">
+                            <label className="inline-flex items-center btn btn-accent btn-outline hover:text-white  ">
+                                <input
+                                    type="radio"
+                                    name="role"
+                                    value="student"
+                                    className="form-radio text-indigo-600"
+                                    defaultChecked
+                                    required
+                                />
+                                <span className="ml-2 ">Student</span>
+                            </label>
+                            <label className="inline-flex items-center btn btn-accent btn-outline hover:text-white">
+                                <input
+                                    type="radio"
+                                    name="role"
+                                    value="teacher"
+                                    className="form-radio text-indigo-600"
+                                    required
+                                />
+                                <span className="ml-2  ">Teacher</span>
+                            </label>
+                        </div>
+                    </div>
+
                     {/* Full Name */}
                     <div>
                         <label className="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
@@ -180,7 +265,10 @@ const Register = () => {
                         Login
                     </Link>
                 </p>
+
+                <SocialLogin />
             </div>
+
         </div>
     );
 };
