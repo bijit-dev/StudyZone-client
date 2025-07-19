@@ -1,21 +1,23 @@
 import { useLocation, useNavigate } from 'react-router';
 import useAuth from '../../../hooks/useAuth';
-import useAxios from '../../../hooks/useAxios ';
+import useAxiosSecure from '../../../hooks/useAxiosSecure';
 
 const SocialLogin = () => {
     const { googleSignIn } = useAuth();
     const location = useLocation();
     const navigate = useNavigate();
     const from = location.state?.from || '/';
-    const axiosInstance = useAxios();
+    const axiosInstance = useAxiosSecure();
 
     const handleGoogleSignIn = () => {
         googleSignIn()
             .then(async (result) => {
                 const user = result.user;
-
+                
                 // update userinfo in the database
                 const userInfo = {
+                    name: user.displayName,
+                    photoURL: user.photoURL,
                     email: user.email,
                     role: 'Student', // default role
                     created_at: new Date().toISOString(),

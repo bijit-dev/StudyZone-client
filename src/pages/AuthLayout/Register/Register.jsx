@@ -7,7 +7,7 @@ import Swal from "sweetalert2";
 import { auth } from "../../../firebase/firebase.init";
 import { updateProfile } from "firebase/auth";
 import SocialLogin from "../SocialLogin/SocialLogin";
-import useAxios from "../../../hooks/useAxios ";
+import useAxios from "../../../hooks/useAxios";
 
 const Register = () => {
     const { createUser } = useAuth();
@@ -90,6 +90,8 @@ const Register = () => {
 
                         // update userinfo in the database
                         const userInfo = {
+                            name: fullName,
+                            photoURL: photoURL,
                             email: email,
                             role: role, // default role
                             created_at: new Date().toISOString(),
