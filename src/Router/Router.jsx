@@ -11,6 +11,7 @@ import PrivateRoute from "../Routes/PrivateRoute";
 import DashboardLayout from "../Layout/DashboardLayout";
 import DashboardHome from "../pages/Dashboard/DashboardHome/DashboardHome";
 import CreateSession from "../pages/Dashboard/CreateSession/CreateSession";
+import SessionDetails from "../pages/SessionDetails/SessionDetails";
 
 export const router = createBrowserRouter([
     {
@@ -29,6 +30,10 @@ export const router = createBrowserRouter([
             {
                 path: 'study-sessions',
                 Component: StudySessions
+            },
+            {
+                path: 'session/:id',
+                Component: SessionDetails,
             }
 
         ]

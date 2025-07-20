@@ -1,12 +1,12 @@
 import { NavLink, Outlet } from 'react-router';
-import { FaHome } from 'react-icons/fa';
+import { FaChalkboardTeacher, FaHome } from 'react-icons/fa';
 import StudyZoneLogo from '../components/StudyZoneLogo';
 // import useUserRole from '../hooks/useUserRole';
 
 const DashboardLayout = () => {
 
     // const { role, roleLoading } = useUserRole();
-    
+
     return (
         <div className="drawer lg:drawer-open">
             <input id="my-drawer-2" type="checkbox" className="drawer-toggle" />
@@ -43,15 +43,21 @@ const DashboardLayout = () => {
                 <label htmlFor="my-drawer-2" aria-label="close sidebar" className="drawer-overlay"></label>
                 <ul className="menu bg-base-200 text-base-content min-h-full w-80 p-4">
                     {/* Sidebar content here */}
-                    <StudyZoneLogo/>
+                    <StudyZoneLogo />
                     <li>
                         <NavLink to="/dashboard">
                             <FaHome className="inline-block mr-2" />
                             Home
                         </NavLink>
                     </li>
-                    
-                    
+                    <li>
+                        <NavLink to="/dashboard/create-session">
+                            <FaChalkboardTeacher className="inline-block mr-2" />
+                            Create Session
+                        </NavLink>
+                    </li>
+
+
                 </ul>
             </div>
         </div>

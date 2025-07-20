@@ -1,114 +1,89 @@
-// import { useEffect, useState } from "react";
-import { Link } from "react-router";
-// import axios from "axios";
-// import moment from "moment";
+import { useQuery } from "@tanstack/react-query";
+import useAxios from "../../hooks/useAxios";
+import StudyScssionCard from "./StudyScssionCard";
+import Loader from "../../components/Loader";
 
 const StudySessions = () => {
-    // const [sessions, setSessions] = useState([]);
+    const axiosSecure = useAxios();
 
-    // useEffect(() => {
-    //     axios.get("/sessions") // Replace with your actual API
-    //         .then(res => setSessions(res.data))
-    //         .catch(err => console.error(err));
-    // }, []);
-
-    const sessions = [
-        {
-            id: "1",
-            title: "Introduction to React",
-            tutorName: "Jane Doe",
-            rating: 4.7,
-            description: "Learn the basics of React including components, state, and props.",
-            registrationStart: "2025-07-01",
-            registrationEnd: "2025-07-20",
-            classStart: "2025-07-22",
-            classEnd: "2025-08-10",
-            duration: "3 weeks",
-            fee: "Free",
-            reviews: [
-                {
-                    name: "Student A",
-                    comment: "Great introduction to React!",
-                    rating: 5,
-                },
-                {
-                    name: "Student B",
-                    comment: "Well-structured and easy to follow.",
-                    rating: 4,
-                },
-            ],
+    const { data: sessions = [], isLoading, isError } = useQuery({
+        queryKey: ["studySessions"],
+        queryFn: async () => {
+            const res = await axiosSecure.get("/sessions"); // Adjust API endpoint
+            return res.data;
         },
-        {
-            id: "2",
-            title: "Advanced JavaScript",
-            tutorName: "John Smith",
-            rating: 4.9,
-            description: "Deep dive into ES6+, closures, async/await, and performance tuning.",
-            registrationStart: "2025-06-10",
-            registrationEnd: "2025-07-10",
-            classStart: "2025-07-15",
-            classEnd: "2025-08-05",
-            duration: "3 weeks",
-            fee: "$29",
-            reviews: [
-                {
-                    name: "Student C",
-                    comment: "Helped me understand async JS better!",
-                    rating: 5,
-                },
-                {
-                    name: "Student D",
-                    comment: "Challenging but very rewarding.",
-                    rating: 5,
-                },
-            ],
-        },
-        {
-            id: "3",
-            title: "Full Stack Project Bootcamp",
-            tutorName: "Sarah Khan",
-            rating: 4.8,
-            description:
-                "Build and deploy a full stack project using React, Node.js, Express, and MongoDB.",
-            registrationStart: "2025-08-01",
-            registrationEnd: "2025-08-15",
-            classStart: "2025-08-18",
-            classEnd: "2025-09-15",
-            duration: "4 weeks",
-            fee: "$49",
-            reviews: [
-                {
-                    name: "Student E",
-                    comment: "Best hands-on course!",
-                    rating: 5,
-                },
-            ],
-        },
-    ];
+    });
 
+    if (isLoading) return <Loader/>;
 
-    const isClosed = (session) => {
-        return new Date() > new Date(session.registrationEnd);
+    if (isError) {
+        return (
+            <div className="text-center py-10 text-red-500">Failed to load sessions.</div>
+        );
     }
+
+    const now = new Date();
+
+    // Separate sessions by status
+    const upcomingSessions = sessions.filter(
+        (s) => new Date(s.registrationStart) > now
+    );
+    const ongoingSessions = sessions.filter(
+        (s) =>
+            new Date(s.registrationStart) <= now && new Date(s.registrationEnd) >= now
+    );
+    const closedSessions = sessions.filter(
+        (s) => new Date(s.registrationEnd) < now
+    );
+
+
+
     return (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 p-6">
-            {sessions.map(session => {
-                // const isClosed = moment().isAfter(moment(session.registrationEnd));
-                return (
-                    <div key={session.id} className="border rounded-xl shadow-lg p-4">
-                        <h2 className="text-xl font-bold text-indigo-600">{session.title}</h2>
-                        <p className="text-gray-600 mt-2">{session.description.slice(0, 100)}...</p>
-                        <span className={`inline-block mt-3 text-sm px-3 py-1 rounded-full ${isClosed ? 'bg-red-100 text-red-600' : 'bg-green-100 text-green-600'}`}>
-                            {isClosed ? 'Closed' : 'Ongoing'}
-                        </span>
-                        <div className="mt-4">
-                            <Link to={`/sessions/${session.id}`}>
-                                <button className="btn btn-accent w-full">Read More</button>
-                            </Link>
-                        </div>
+        <div className="container mx-auto px-4 py-10">
+            <h2 className="text-3xl font-bold text-center mb-10">Study Sessions</h2>
+
+            {/* Ongoing */}
+            {ongoingSessions.length > 0 && (
+                <>
+                    <h3 className="text-2xl font-semibold mb-6 text-green-700">Ongoing</h3>
+                    <div className="grid gap-8 grid-cols-1 md:grid-cols-3 lg:grid-cols-4 mb-12">
+                        {
+                            ongoingSessions.map(session => (
+                            <StudyScssionCard key={session._id} session={session} now={now} />
+                            ))
+                        }
                     </div>
-                );
-            })}
+                </>
+            )}
+
+            {/* Upcoming */}
+            {upcomingSessions.length > 0 && (
+                <>
+                    <h3 className="text-2xl font-semibold mb-6 text-indigo-700">Upcoming</h3>
+                    <div className="grid gap-8 grid-cols-1 md:grid-cols-3 lg:grid-cols-4  mb-12">
+                        {upcomingSessions.map(session => (
+                            <StudyScssionCard key={session._id} session={session} now={now} />
+                            ))}
+                    </div>
+                </>
+            )}
+
+            {/* Closed */}
+            {closedSessions.length > 0 && (
+                <>
+                    <h3 className="text-2xl font-semibold mb-6 text-red-700">Closed</h3>
+                    <div className="grid gap-8 grid-cols-1 md:grid-cols-3 lg:grid-cols-4">
+                        {closedSessions.map(session => (
+                            <StudyScssionCard key={session._id} session={session} now={now} />
+                            ))}
+                    </div>
+                </>
+            )}
+
+            {/* No sessions at all */}
+            {sessions.length === 0 && (
+                <p className="text-center text-gray-500">No study sessions found.</p>
+            )}
         </div>
     );
 };
