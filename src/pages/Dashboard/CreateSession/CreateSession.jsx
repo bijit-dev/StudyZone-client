@@ -2,12 +2,37 @@ import { useForm } from "react-hook-form";
 import Swal from "sweetalert2";
 import useAuth from "../../../hooks/useAuth";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
+import axios from "axios";
+import { useState } from "react";
 
 const CreateSession = () => {
     const { user } = useAuth();
+    const [photoURL, setPhotoURL] = useState("");
+    const [uploading, setUploading] = useState(false);
     const axiosSecure = useAxiosSecure();
     const { register, handleSubmit, reset } = useForm();
 
+    const imgbbApiKey = "3c823c20841b57865bed1f6729b05fca";
+
+    // 📤 Upload Photo
+    const handleImageUpload = async (e) => {
+        const file = e.target.files[0];
+        const formData = new FormData();
+        formData.append("image", file);
+        try {
+            setUploading(true);
+            const res = await axios.post(
+                `https://api.imgbb.com/1/upload?key=${imgbbApiKey}`,
+                formData
+            );
+            setPhotoURL(res.data.data.url);
+            setUploading(false);
+        } catch (error) {
+            console.error("Image upload failed", error);
+            setUploading(false);
+        }
+    };
+    // 📅 Handle Form Submission
     const onSubmit = async (data) => {
         const sessionData = {
             title: data.title,
@@ -23,7 +48,7 @@ const CreateSession = () => {
             status: "pending",
             createdAt: new Date(),
             averageRating: 0,
-            reviews : [],
+            reviews: [],
         };
 
         try {
@@ -61,6 +86,26 @@ const CreateSession = () => {
                         type="text"
                         className="w-full border rounded-md px-3 py-2"
                     />
+                </div>
+                {/* Upload Photo */}
+                <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Upload Photo</label>
+                    <input
+                        type="file"
+                        {...register("photoURL", { required: true })}
+                        accept="image/*"
+                        onChange={handleImageUpload}
+                        className="w-full px-4 py-2 border rounded-lg focus:outline-none"
+                        required
+                    />
+                    {uploading && <p className="text-sm text-gray-500 mt-1">Uploading...</p>}
+                    {photoURL && (
+                        <img
+                            src={photoURL}
+                            alt="Uploaded"
+                            className="mt-2 rounded-lg w-24 h-24 object-cover"
+                        />
+                    )}
                 </div>
 
                 {/* Tutor Name */}
