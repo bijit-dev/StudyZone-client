@@ -26,7 +26,7 @@ const Navbar = () => {
     </>
 
     return (
-        <div className="bg-base-100 shadow-sm font-poppins">
+        <div className="bg-base-100 shadow-sm font-poppins w-full sticky top-0 z-50">
             <div className="navbar container mx-auto px-4">
                 <div className="navbar-start">
                     <StudyZoneLogo />

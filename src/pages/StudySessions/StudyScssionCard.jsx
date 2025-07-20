@@ -11,7 +11,7 @@ const StudyScssionCard = ({ session, now }) => {
         <div className="card bg-base-100 shadow-sm relative">
             <figure>
                 <img
-                    src={session.image || "https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp"}
+                    src={session.photoURL || "https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp"}
                     alt="session image" />
             </figure>
             <p

@@ -4,6 +4,7 @@ import useAuth from "../../../hooks/useAuth";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import axios from "axios";
 import { useState } from "react";
+import { useNavigate } from "react-router";
 
 const CreateSession = () => {
     const { user } = useAuth();
@@ -11,6 +12,7 @@ const CreateSession = () => {
     const [uploading, setUploading] = useState(false);
     const axiosSecure = useAxiosSecure();
     const { register, handleSubmit, reset } = useForm();
+    const navigate = useNavigate();
 
     const imgbbApiKey = "3c823c20841b57865bed1f6729b05fca";
 
@@ -36,6 +38,7 @@ const CreateSession = () => {
     const onSubmit = async (data) => {
         const sessionData = {
             title: data.title,
+            photoURL: photoURL,
             description: data.description,
             tutorName: user?.displayName,
             tutorEmail: user?.email,
@@ -47,8 +50,6 @@ const CreateSession = () => {
             registrationFee: 0, // default value
             status: "pending",
             createdAt: new Date(),
-            averageRating: 0,
-            reviews: [],
         };
 
         try {
@@ -60,6 +61,7 @@ const CreateSession = () => {
                     timer: 2000,
                     showConfirmButton: false,
                 });
+                navigate("/dashboard");
                 reset();
             }
         } catch (error) {
@@ -92,7 +94,6 @@ const CreateSession = () => {
                     <label className="block text-sm font-medium text-gray-700 mb-1">Upload Photo</label>
                     <input
                         type="file"
-                        {...register("photoURL", { required: true })}
                         accept="image/*"
                         onChange={handleImageUpload}
                         className="w-full px-4 py-2 border rounded-lg focus:outline-none"

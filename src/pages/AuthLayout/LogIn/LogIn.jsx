@@ -18,13 +18,13 @@ const LogIn = () => {
     const onSubmit = data => {
         signIn(data.email, data.password)
             .then(() => {
-                navigate(from);
                 Swal.fire({
                     title: "Login successfully!",
                     icon: "success",
                     showConfirmButton: false,
                     timer: 1500
                 });
+                navigate(from);
 
             }).catch(() => {
                 Swal.fire({

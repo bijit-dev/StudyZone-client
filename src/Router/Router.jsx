@@ -12,6 +12,9 @@ import DashboardLayout from "../Layout/DashboardLayout";
 import DashboardHome from "../pages/Dashboard/DashboardHome/DashboardHome";
 import CreateSession from "../pages/Dashboard/CreateSession/CreateSession";
 import SessionDetails from "../pages/SessionDetails/SessionDetails";
+import ViewBookedSession from "../pages/Dashboard/ViewBookedSession/ViewBookedSession";
+import CreateNote from "../pages/Dashboard/CreateNote/CreateNote";
+import ManagePersonalNotes from "../pages/Dashboard/ManagePersonalNotes/ManagePersonalNotes";
 
 export const router = createBrowserRouter([
     {
@@ -64,6 +67,22 @@ export const router = createBrowserRouter([
             {
                 path: 'create-session',
                 Component: CreateSession
+            },
+            {
+                path: 'view-booked-session',
+                Component: ViewBookedSession
+            },            
+            {
+                path: 'create-note',
+                Component: CreateNote
+            },
+            {
+                path: 'manage-personal-notes',
+                Component: ManagePersonalNotes
+            },
+            {
+                path: 'view-all-study-materials',
+                Component: ManagePersonalNotes
             },
             
         ]

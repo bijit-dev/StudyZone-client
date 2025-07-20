@@ -1,5 +1,5 @@
 import { NavLink, Outlet } from 'react-router';
-import { FaChalkboardTeacher, FaHome } from 'react-icons/fa';
+import { FaChalkboardTeacher, FaHome, FaBookOpen, FaPlusCircle, FaClipboardList, FaFolderOpen  } from 'react-icons/fa';
 import StudyZoneLogo from '../components/StudyZoneLogo';
 // import useUserRole from '../hooks/useUserRole';
 
@@ -56,6 +56,34 @@ const DashboardLayout = () => {
                             Create Session
                         </NavLink>
                     </li>
+                    <li>
+                        <NavLink to="/dashboard/view-booked-session">
+                            <FaBookOpen className="inline-block mr-2" />
+                            View Booked Sessions
+                        </NavLink>
+                    </li>
+
+                    <li>
+                        <NavLink to="/dashboard/create-note">
+                            <FaPlusCircle className="inline-block mr-2" />
+                            Create Note
+                        </NavLink>
+                    </li>
+
+                    <li>
+                        <NavLink to="/dashboard/manage-personal-notes">
+                            <FaClipboardList className="inline-block mr-2" />
+                            Manage Personal Notes
+                        </NavLink>
+                    </li>
+
+                    <li>
+                        <NavLink to="/dashboard/view-all-study-materials">
+                            <FaFolderOpen className="inline-block mr-2" />
+                            View All Study Materials
+                        </NavLink>
+                    </li>
+
 
 
                 </ul>
