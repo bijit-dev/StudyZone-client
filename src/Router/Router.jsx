@@ -15,6 +15,7 @@ import SessionDetails from "../pages/SessionDetails/SessionDetails";
 import ViewBookedSession from "../pages/Dashboard/ViewBookedSession/ViewBookedSession";
 import CreateNote from "../pages/Dashboard/CreateNote/CreateNote";
 import ManagePersonalNotes from "../pages/Dashboard/ManagePersonalNotes/ManagePersonalNotes";
+import BookedSessionDetails from "../pages/Dashboard/BookedSessionDetails/BookedSessionDetails";
 
 export const router = createBrowserRouter([
     {
@@ -71,6 +72,10 @@ export const router = createBrowserRouter([
             {
                 path: 'view-booked-session',
                 Component: ViewBookedSession
+            },            
+            {
+                path: 'booked-session/:id',
+                Component: BookedSessionDetails
             },            
             {
                 path: 'create-note',
