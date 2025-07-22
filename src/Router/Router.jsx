@@ -14,8 +14,10 @@ import CreateSession from "../pages/Dashboard/CreateSession/CreateSession";
 import SessionDetails from "../pages/SessionDetails/SessionDetails";
 import ViewBookedSession from "../pages/Dashboard/ViewBookedSession/ViewBookedSession";
 import CreateNote from "../pages/Dashboard/CreateNote/CreateNote";
-import ManagePersonalNotes from "../pages/Dashboard/ManagePersonalNotes/ManagePersonalNotes";
 import BookedSessionDetails from "../pages/Dashboard/BookedSessionDetails/BookedSessionDetails";
+import ManagePersonalNotes from "../pages/Dashboard/ManagePersonalNotes/ManagePersonalNotes";
+import ViewAllStudyMaterials from "../pages/Dashboard/ViewAllStudyMaterials/ViewAllStudyMaterials";
+
 
 export const router = createBrowserRouter([
     {
@@ -66,10 +68,6 @@ export const router = createBrowserRouter([
                 Component: DashboardHome
             },
             {
-                path: 'create-session',
-                Component: CreateSession
-            },
-            {
                 path: 'view-booked-session',
                 Component: ViewBookedSession
             },            
@@ -87,9 +85,24 @@ export const router = createBrowserRouter([
             },
             {
                 path: 'view-all-study-materials',
-                Component: ManagePersonalNotes
+                Component: ViewAllStudyMaterials
             },
-            
+            {
+                path: 'create-session',
+                Component: CreateSession
+            },
+            {
+                path: "view-my-sessions",
+                Component: CreateSession
+            },
+            {
+                path: 'upload-materials',
+                Component: CreateSession
+            },
+            {
+                path: 'view-all-materials',
+                Component: CreateSession
+            },
         ]
     },
     {

@@ -1,5 +1,5 @@
 import { NavLink, Outlet } from 'react-router';
-import { FaChalkboardTeacher, FaHome, FaBookOpen, FaPlusCircle, FaClipboardList, FaFolderOpen  } from 'react-icons/fa';
+import { FaChalkboardTeacher, FaHome, FaBookOpen, FaPlusCircle, FaClipboardList, FaFolderOpen, FaUpload, FaListUl } from 'react-icons/fa';
 import StudyZoneLogo from '../components/StudyZoneLogo';
 // import useUserRole from '../hooks/useUserRole';
 
@@ -51,12 +51,6 @@ const DashboardLayout = () => {
                         </NavLink>
                     </li>
                     <li>
-                        <NavLink to="/dashboard/create-session">
-                            <FaChalkboardTeacher className="inline-block mr-2" />
-                            Create Session
-                        </NavLink>
-                    </li>
-                    <li>
                         <NavLink to="/dashboard/view-booked-session">
                             <FaBookOpen className="inline-block mr-2" />
                             View Booked Sessions
@@ -83,6 +77,33 @@ const DashboardLayout = () => {
                             View All Study Materials
                         </NavLink>
                     </li>
+                    <li>
+                        <NavLink to="/dashboard/create-session">
+                            <FaPlusCircle className="inline-block mr-2" />
+                            Create Session
+                        </NavLink>
+                    </li>
+                    <li>
+                        <NavLink to="/dashboard/view-my-sessions">
+                            <FaListUl className="inline-block mr-2" />
+                            My Created Sessions
+                        </NavLink>
+                    </li>
+
+                    <li>
+                        <NavLink to="/dashboard/upload-materials">
+                            <FaUpload className="inline-block mr-2" />
+                            Upload Materials
+                        </NavLink>
+                    </li>
+
+                    <li>
+                        <NavLink to="/dashboard/view-all-materials">
+                            <FaFolderOpen className="inline-block mr-2" />
+                            View All Materials
+                        </NavLink>
+                    </li>
+
 
 
 
