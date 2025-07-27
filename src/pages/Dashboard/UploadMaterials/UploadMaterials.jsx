@@ -65,8 +65,6 @@ const UploadMaterials = () => {
                 uploadedAt: new Date(),
             };
 
-            console.log("Sending material:", material);
-
             const res = await axiosSecure.post("/materials", material);
             if (res.data.insertedId) {
                 Swal.fire("Success", "Material uploaded successfully!", "success");

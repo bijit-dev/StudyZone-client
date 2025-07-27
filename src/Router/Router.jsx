@@ -19,6 +19,7 @@ import ManagePersonalNotes from "../pages/Dashboard/ManagePersonalNotes/ManagePe
 import ViewAllStudyMaterials from "../pages/Dashboard/ViewAllStudyMaterials/ViewAllStudyMaterials";
 import MyCreatedSessions from "../pages/Dashboard/MyCreatedSessions/MyCreatedSessions";
 import UploadMaterials from "../pages/Dashboard/UploadMaterials/UploadMaterials";
+import ViewAllMaterials from "../pages/Dashboard/ViewAllMaterials/ViewAllMaterials";
 
 
 export const router = createBrowserRouter([
@@ -69,14 +70,15 @@ export const router = createBrowserRouter([
                 index: true,
                 Component: DashboardHome
             },
+            // ✅ Private routes for student
             {
                 path: 'view-booked-session',
                 Component: ViewBookedSession
-            },            
+            },
             {
                 path: 'booked-session/:id',
                 Component: BookedSessionDetails
-            },            
+            },
             {
                 path: 'create-note',
                 Component: CreateNote
@@ -89,6 +91,7 @@ export const router = createBrowserRouter([
                 path: 'view-all-study-materials',
                 Component: ViewAllStudyMaterials
             },
+            // ✅ Private routes for tutor
             {
                 path: 'create-session',
                 Component: CreateSession
@@ -103,7 +106,12 @@ export const router = createBrowserRouter([
             },
             {
                 path: 'view-all-materials',
-                Component: CreateSession
+                Component: ViewAllMaterials
+            },
+            // ✅ Private routes for admin
+            {
+                path: 'view-all-materials',
+                Component: ViewAllMaterials
             },
         ]
     },
