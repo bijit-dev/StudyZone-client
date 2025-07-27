@@ -17,6 +17,8 @@ import CreateNote from "../pages/Dashboard/CreateNote/CreateNote";
 import BookedSessionDetails from "../pages/Dashboard/BookedSessionDetails/BookedSessionDetails";
 import ManagePersonalNotes from "../pages/Dashboard/ManagePersonalNotes/ManagePersonalNotes";
 import ViewAllStudyMaterials from "../pages/Dashboard/ViewAllStudyMaterials/ViewAllStudyMaterials";
+import MyCreatedSessions from "../pages/Dashboard/MyCreatedSessions/MyCreatedSessions";
+import UploadMaterials from "../pages/Dashboard/UploadMaterials/UploadMaterials";
 
 
 export const router = createBrowserRouter([
@@ -93,11 +95,11 @@ export const router = createBrowserRouter([
             },
             {
                 path: "view-my-sessions",
-                Component: CreateSession
+                Component: MyCreatedSessions
             },
             {
                 path: 'upload-materials',
-                Component: CreateSession
+                Component: UploadMaterials
             },
             {
                 path: 'view-all-materials',

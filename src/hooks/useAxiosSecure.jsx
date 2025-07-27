@@ -10,31 +10,32 @@ const useAxiosSecure = () => {
     const { user, logOut } = useAuth();
     const navigate = useNavigate();
 
+
     axiosSecure.interceptors.request.use(config => {
-        config.headers.Authorization = `Bearer ${user.accessToken}`
+        if (user && user.accessToken) {
+            config.headers.Authorization = `Bearer ${user.accessToken}`;
+        }
         return config;
     }, error => {
         return Promise.reject(error);
-    })
+    });
 
     axiosSecure.interceptors.response.use(res => {
         return res;
     }, error => {
-        const status = error.status;
+        const status = error.response?.status;
         if (status === 403) {
-            navigate('/forbidden');
-        }
-        else if (status === 401) {
+            navigate('/');
+        } else if (status === 401) {
             logOut()
                 .then(() => {
-                    navigate('/login')
+                    navigate('/login');
                 })
-                .catch(() => { })
+                .catch(() => {});
         }
 
         return Promise.reject(error);
-    })
-
+    });
 
     return axiosSecure;
 };

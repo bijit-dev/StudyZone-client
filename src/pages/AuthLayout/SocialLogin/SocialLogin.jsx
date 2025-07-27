@@ -14,12 +14,13 @@ const SocialLogin = () => {
             .then(async (result) => {
                 const user = result.user;
                 
+                
                 // update userinfo in the database
                 const userInfo = {
                     name: user.displayName,
                     photoURL: user.photoURL,
                     email: user.email,
-                    role: 'Student', // default role
+                    role: 'student',
                     created_at: new Date().toISOString(),
                     last_log_in: new Date().toISOString()
                 }
