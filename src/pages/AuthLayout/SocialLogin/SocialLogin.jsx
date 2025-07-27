@@ -13,8 +13,8 @@ const SocialLogin = () => {
         googleSignIn()
             .then(async (result) => {
                 const user = result.user;
-                
-                
+                navigate(from);
+
                 // update userinfo in the database
                 const userInfo = {
                     name: user.displayName,
@@ -27,8 +27,6 @@ const SocialLogin = () => {
 
                 // Check if user already exists
                 await axiosInstance.post('/users', userInfo);
-
-                navigate(from);
             })
             .catch(error => {
                 console.error(error);

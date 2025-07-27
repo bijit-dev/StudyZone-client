@@ -20,6 +20,7 @@ import ViewAllStudyMaterials from "../pages/Dashboard/ViewAllStudyMaterials/View
 import MyCreatedSessions from "../pages/Dashboard/MyCreatedSessions/MyCreatedSessions";
 import UploadMaterials from "../pages/Dashboard/UploadMaterials/UploadMaterials";
 import ViewAllMaterials from "../pages/Dashboard/ViewAllMaterials/ViewAllMaterials";
+import ViewAllUsers from "../pages/Dashboard/ViewAllUsers/ViewAllUsers";
 
 
 export const router = createBrowserRouter([
@@ -110,9 +111,17 @@ export const router = createBrowserRouter([
             },
             // ✅ Private routes for admin
             {
+                path: 'view-all-users',
+                Component: ViewAllUsers
+            },
+            {
+                path: 'view-all-sessions',
+                // Component: ViewAllSessions
+            },
+            {
                 path: 'view-all-materials',
                 Component: ViewAllMaterials
-            },
+            }
         ]
     },
     {

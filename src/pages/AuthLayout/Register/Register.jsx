@@ -156,11 +156,11 @@ const Register = () => {
                                 <input
                                     type="radio"
                                     name="role"
-                                    value="teacher"
+                                    value="Tutor"
                                     className="form-radio text-indigo-600"
                                     required
                                 />
-                                <span className="ml-2  ">Teacher</span>
+                                <span className="ml-2  ">Tutor</span>
                             </label>
                         </div>
                     </div>

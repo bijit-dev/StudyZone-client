@@ -3,7 +3,7 @@ import useUserRole from "../../../hooks/useUserRole";
 import ErrorPage from "../../ErrorPage/ErrorPage";
 import AdminDashboard from "./AdminDashboard";
 import StudentDashboard from "./StudentDashboard";
-import TeacherDashboard from "./TeacherDashboard";
+import TutorDashboard from "./TutorDashboard";
 
 
 const DashboardHome = () => {
@@ -13,13 +13,13 @@ const DashboardHome = () => {
         return <Loader></Loader>
     }
 
-    if(role === 'student'){
+    if (role === 'student') {
         return <StudentDashboard></StudentDashboard>
     }
-    else if(role === 'teacher'){
-        return <TeacherDashboard></TeacherDashboard>
+    else if (role === 'Tutor') {
+        return <TutorDashboard></TutorDashboard>
     }
-    else if(role ==='admin'){
+    else if (role === 'admin') {
         return <AdminDashboard></AdminDashboard>
     }
     else {

@@ -10,7 +10,6 @@ const ViewAllMaterials = () => {
     const queryClient = useQueryClient();
     const [editingMaterial, setEditingMaterial] = useState(null);
 
-    // Fetch materials
     const { data: materials = [], isLoading } = useQuery({
         queryKey: ["myMaterials", user?.email],
         enabled: !!user?.email,
@@ -20,24 +19,17 @@ const ViewAllMaterials = () => {
         },
     });
 
-    // Delete
     const deleteMutation = useMutation({
-        mutationFn: async (id) => {
-            const res = await axiosSecure.delete(`/materials/${id}`);
-            return res.data;
-        },
+        mutationFn: async (id) => await axiosSecure.delete(`/materials/${id}`),
         onSuccess: () => {
             Swal.fire("Deleted!", "Material deleted successfully.", "success");
             queryClient.invalidateQueries(["myMaterials"]);
         },
     });
 
-    // Update
     const updateMutation = useMutation({
-        mutationFn: async ({ id, updatedData }) => {
-            const res = await axiosSecure.patch(`/materials/${id}`, updatedData);
-            return res.data;
-        },
+        mutationFn: async ({ id, updatedData }) =>
+            await axiosSecure.patch(`/materials/${id}`, updatedData),
         onSuccess: () => {
             Swal.fire("Updated!", "Material updated successfully.", "success");
             queryClient.invalidateQueries(["myMaterials"]);
@@ -48,12 +40,11 @@ const ViewAllMaterials = () => {
     const handleDelete = (id) => {
         Swal.fire({
             title: "Are you sure?",
-            text: "You won't be able to revert this!",
+            text: "You won’t be able to revert this!",
             icon: "warning",
             showCancelButton: true,
-            confirmButtonColor: "#3085d6",
-            cancelButtonColor: "#d33",
             confirmButtonText: "Yes, delete it!",
+            confirmButtonColor: "#e11d48",
         }).then((result) => {
             if (result.isConfirmed) {
                 deleteMutation.mutate(id);
@@ -90,59 +81,59 @@ const ViewAllMaterials = () => {
     };
 
     return (
-        <div className="p-6">
-            <h2 className="text-2xl font-bold mb-4">My Uploaded Materials</h2>
+        <div className="p-4 md:p-6">
+            <h2 className="text-2xl font-bold mb-6 text-center">📚 My Uploaded Materials</h2>
 
             {isLoading ? (
-                <p>Loading...</p>
+                <p>Loading materials...</p>
             ) : materials.length === 0 ? (
-                <p>No materials found.</p>
+                <p className="text-center text-gray-600">You haven't uploaded any materials yet.</p>
             ) : (
-                <div className="overflow-x-auto">
-                    <table className="table-auto w-full border-collapse border border-gray-300">
-                        <thead className="bg-gray-100">
+                <div className="overflow-x-auto rounded shadow border">
+                    <table className="min-w-full divide-y divide-gray-200">
+                        <thead className="bg-gradient-to-r from-blue-100 to-indigo-100">
                             <tr>
-                                <th className="border p-2">#</th>
-                                <th className="border p-2">Title</th>
-                                <th className="border p-2">Image</th>
-                                <th className="border p-2">Link</th>
-                                <th className="border p-2">Actions</th>
+                                <th className="p-3 text-left text-xs font-bold text-gray-600">#</th>
+                                <th className="p-3 text-left text-xs font-bold text-gray-600">Title</th>
+                                <th className="p-3 text-left text-xs font-bold text-gray-600">Image</th>
+                                <th className="p-3 text-left text-xs font-bold text-gray-600">Link</th>
+                                <th className="p-3 text-center text-xs font-bold text-gray-600">Actions</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody className="divide-y divide-gray-100">
                             {materials.map((mat, index) => (
-                                <tr key={mat._id} className="text-center">
-                                    <td className="border p-2">{index + 1}</td>
-                                    <td className="border p-2">{mat.title}</td>
-                                    <td className="border p-2">
+                                <tr key={mat._id} className="hover:bg-gray-50 transition">
+                                    <td className="p-3">{index + 1}</td>
+                                    <td className="p-3 font-medium">{mat.title}</td>
+                                    <td className="p-3">
                                         <img
                                             src={mat.imageURL}
-                                            alt="Material"
-                                            className="w-20 h-12 object-cover mx-auto rounded"
+                                            alt="thumbnail"
+                                            className="w-16 h-10 object-cover rounded shadow-sm hover:scale-105 transition duration-200"
                                         />
                                     </td>
-                                    <td className="border p-2">
+                                    <td className="p-3">
                                         <a
                                             href={mat.resourceLink}
                                             target="_blank"
                                             rel="noopener noreferrer"
-                                            className="text-blue-600 underline"
+                                            className="inline-block bg-blue-100 text-blue-700 text-xs px-2 py-1 rounded hover:bg-blue-200"
                                         >
-                                            Open
+                                            🔗 Resource
                                         </a>
                                     </td>
-                                    <td className="border p-2 space-x-2">
+                                    <td className="p-3 text-center space-y-1 md:space-y-0 md:space-x-2 flex flex-col md:flex-row justify-center">
                                         <button
                                             onClick={() => setEditingMaterial(mat)}
-                                            className="bg-yellow-500 text-white px-2 py-1 rounded hover:bg-yellow-600"
+                                            className="bg-yellow-400 text-white px-3 py-1 rounded text-xs hover:bg-yellow-500"
                                         >
-                                            Update
+                                            ✏️ Edit
                                         </button>
                                         <button
                                             onClick={() => handleDelete(mat._id)}
-                                            className="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600"
+                                            className="bg-rose-500 text-white px-3 py-1 rounded text-xs hover:bg-rose-600"
                                         >
-                                            Delete
+                                            🗑️ Delete
                                         </button>
                                     </td>
                                 </tr>
@@ -152,43 +143,43 @@ const ViewAllMaterials = () => {
                 </div>
             )}
 
-            {/* Update Modal */}
+            {/* 🔄 Modal */}
             {editingMaterial && (
-                <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
-                    <div className="bg-white p-6 rounded-lg w-full max-w-md">
-                        <h3 className="text-xl font-bold mb-4">Update Material</h3>
+                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 px-4">
+                    <div className="bg-white p-6 rounded-lg w-full max-w-md shadow-lg">
+                        <h3 className="text-xl font-semibold mb-4">Update Material</h3>
                         <form onSubmit={handleUpdate} className="space-y-4">
                             <input
                                 type="text"
                                 name="title"
                                 defaultValue={editingMaterial.title}
+                                className="w-full border px-3 py-2 rounded"
                                 required
-                                className="w-full p-2 border rounded"
                             />
                             <input
                                 type="url"
                                 name="resourceLink"
                                 defaultValue={editingMaterial.resourceLink}
+                                className="w-full border px-3 py-2 rounded"
                                 required
-                                className="w-full p-2 border rounded"
                             />
                             <input
                                 type="file"
                                 name="image"
                                 accept="image/*"
-                                className="w-full p-2 border rounded"
+                                className="w-full border px-3 py-2 rounded"
                             />
-                            <div className="flex justify-end space-x-2">
+                            <div className="flex justify-end gap-2">
                                 <button
                                     type="button"
                                     onClick={() => setEditingMaterial(null)}
-                                    className="px-4 py-2 bg-gray-400 text-white rounded"
+                                    className="bg-gray-300 text-gray-800 px-4 py-2 rounded"
                                 >
                                     Cancel
                                 </button>
                                 <button
                                     type="submit"
-                                    className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+                                    className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
                                 >
                                     Save
                                 </button>

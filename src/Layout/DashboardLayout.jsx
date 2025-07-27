@@ -1,5 +1,5 @@
 import { NavLink, Outlet } from 'react-router';
-import { FaChalkboardTeacher, FaHome, FaBookOpen, FaPlusCircle, FaClipboardList, FaFolderOpen, FaUpload, FaListUl } from 'react-icons/fa';
+import { FaChalkboardTeacher, FaHome, FaBookOpen, FaPlusCircle, FaClipboardList, FaFolderOpen, FaUpload, FaListUl, FaUsers } from 'react-icons/fa';
 import StudyZoneLogo from '../components/StudyZoneLogo';
 // import useUserRole from '../hooks/useUserRole';
 
@@ -104,9 +104,26 @@ const DashboardLayout = () => {
                         </NavLink>
                     </li>
 
+                    <li>
+                        <NavLink to="/dashboard/view-all-users">
+                            <FaUsers className="inline-block mr-2" />
+                            View All Users
+                        </NavLink>
+                    </li>
 
+                    <li>
+                        <NavLink to="/dashboard/view-all-sessions">
+                            <FaChalkboardTeacher className="inline-block mr-2" />
+                            View All Sessions
+                        </NavLink>
+                    </li>
 
-
+                    <li>
+                        <NavLink to="/dashboard/view-all-materials">
+                            <FaFolderOpen className="inline-block mr-2" />
+                            View All Materials
+                        </NavLink>
+                    </li>
                 </ul>
             </div>
         </div>
