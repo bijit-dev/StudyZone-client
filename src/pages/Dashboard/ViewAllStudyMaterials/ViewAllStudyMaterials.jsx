@@ -80,6 +80,7 @@ const ViewAllStudyMaterials = () => {
                                 alt="Study Material"
                                 className="w-full h-48 object-cover rounded mb-3"
                             />
+                            <h1 className="font-bold text-xl py-4">{material.title}</h1>
                             <div className="flex justify-between items-center gap-2">
                                 <button
                                     onClick={() => handleDownload(material.imageURL)}

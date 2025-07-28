@@ -17,7 +17,7 @@ const ViewAllSessions = () => {
         },
     });
 
-    // Mutation: Approve a session
+    // Approve session
     const approveSession = useMutation({
         mutationFn: async ({ id, payment }) => {
             const res = await axiosSecure.patch(`/sessions/${id}/approve`, payment);
@@ -27,27 +27,48 @@ const ViewAllSessions = () => {
             Swal.fire("Approved!", "Session has been approved.", "success");
             queryClient.invalidateQueries(["allSessions"]);
         },
-        onError: () => {
-            Swal.fire("Error!", "Approval failed", "error");
+        onError: (error) => {
+            Swal.fire("Error!", error.response?.data?.message || "Approval failed", "error");
         },
     });
 
-    // Mutation: Reject a session
-    const rejectSession = useMutation({
-        mutationFn: async (id) => {
-            const res = await axiosSecure.patch(`/sessions/${id}/reject`);
-            return res.data;
-        },
-        onSuccess: () => {
-            Swal.fire("Rejected!", "Session has been rejected.", "info");
-            queryClient.invalidateQueries(["allSessions"]);
-        },
-        onError: () => {
-            Swal.fire("Error!", "Rejection failed", "error");
-        },
-    });
+    // Reject session
+    const handleReject = async (sessionId) => {
+        const { value: formValues } = await Swal.fire({
+            title: "Reject Session",
+            html:
+                `<input id="reason" class="swal2-input" placeholder="Rejection Reason">` +
+                `<textarea id="feedback" class="swal2-textarea" placeholder="Additional Feedback"></textarea>`,
+            focusConfirm: false,
+            showCancelButton: true,
+            preConfirm: () => {
+                const reason = document.getElementById("reason").value;
+                const feedback = document.getElementById("feedback").value;
+                if (!reason.trim()) {
+                    Swal.showValidationMessage("Rejection reason is required");
+                    return false;
+                }
+                return { rejectionReason: reason, rejectionFeedback: feedback };
+            }
+        });
 
-    // Mutation: Delete a session
+        console.log(formValues);
+
+
+        if (formValues) {
+            try {
+                const res = await axiosSecure.patch(`/sessions/${sessionId}/reject`, formValues);
+                if (res.data.modifiedCount > 0) {
+                    Swal.fire("Rejected!", "The session has been marked as rejected.", "success");
+                    queryClient.invalidateQueries(["allSessions"]);
+                }
+            } catch (e) {
+                Swal.fire("Error", e.response?.data?.message || "Rejection failed", "error");
+            }
+        }
+    };
+
+    // Delete session
     const deleteSession = useMutation({
         mutationFn: async (id) => {
             const res = await axiosSecure.delete(`/sessions/${id}`);
@@ -57,12 +78,11 @@ const ViewAllSessions = () => {
             Swal.fire("Deleted!", "Session has been deleted.", "success");
             queryClient.invalidateQueries(["allSessions"]);
         },
-        onError: () => {
-            Swal.fire("Error!", "Deletion failed", "error");
+        onError: (error) => {
+            Swal.fire("Error!", error.response?.data?.message || "Deletion failed", "error");
         },
     });
 
-    // Confirm and handle session deletion
     const handleDelete = (id) => {
         Swal.fire({
             title: "Are you sure?",
@@ -79,12 +99,10 @@ const ViewAllSessions = () => {
         });
     };
 
-    // Navigate to update page
     const handleUpdate = (sessionId) => {
         navigate(`/dashboard/SessionUpdate/${sessionId}`);
     };
 
-    // Confirm approval and handle payment input
     const handleApprove = (sessionId) => {
         Swal.fire({
             title: "Is this session free or paid?",
@@ -102,7 +120,7 @@ const ViewAllSessions = () => {
                 const sessionType = result.value;
                 if (sessionType === "paid") {
                     Swal.fire({
-                        title: "Enter RegistrationFee",
+                        title: "Enter Registration Fee",
                         input: "number",
                         inputPlaceholder: "Enter fee",
                         inputAttributes: { min: 1 },
@@ -125,7 +143,7 @@ const ViewAllSessions = () => {
         });
     };
 
-    // Render sessions table by status
+    // Render table by status
     const renderTable = (statusLabel, sessionsList) => (
         <section className="mb-10">
             <h2 className="text-xl font-semibold mb-4 capitalize text-gray-800">
@@ -153,7 +171,7 @@ const ViewAllSessions = () => {
                                     <td className="px-4 py-2">{index + 1}</td>
                                     <td className="px-4 py-2">
                                         <img
-                                            src={session.photoURL}
+                                            src={session.photoURL || "/placeholder.jpg"}
                                             alt="session"
                                             className="w-12 h-12 rounded object-cover border"
                                         />
@@ -165,14 +183,15 @@ const ViewAllSessions = () => {
                                         {session.status === "pending" && (
                                             <>
                                                 <button
-                                                    className="bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded text-xs"
+                                                    className="bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded text-xs disabled:opacity-50"
                                                     onClick={() => handleApprove(session._id)}
+                                                    disabled={approveSession.isPending}
                                                 >
                                                     Approve
                                                 </button>
                                                 <button
                                                     className="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded text-xs"
-                                                    onClick={() => rejectSession.mutate(session._id)}
+                                                    onClick={() => handleReject(session._id)}
                                                 >
                                                     Reject
                                                 </button>
@@ -187,8 +206,9 @@ const ViewAllSessions = () => {
                                                     Update
                                                 </button>
                                                 <button
-                                                    className="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded text-xs"
+                                                    className="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded text-xs disabled:opacity-50"
                                                     onClick={() => handleDelete(session._id)}
+                                                    disabled={deleteSession.isPending}
                                                 >
                                                     Delete
                                                 </button>

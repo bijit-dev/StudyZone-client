@@ -8,7 +8,6 @@ const MyCreatedSessions = () => {
     const axiosSecure = useAxios();
     const queryClient = useQueryClient();
 
-    // Fetch sessions for logged-in tutor
     const { data: sessions = [], isLoading } = useQuery({
         queryKey: ["myCreatedSessions", user?.email],
         enabled: !!user?.email,
@@ -18,29 +17,27 @@ const MyCreatedSessions = () => {
         },
     });
 
-    // Filter approved and rejected sessions
     const approved = sessions.filter(session => session.status === "approved");
     const rejected = sessions.filter(session => session.status === "rejected");
 
-    // Mutation to resend approval request and update status to 'pending'
     const resendMutation = useMutation({
         mutationFn: async (id) => {
-            const res = await axiosSecure.patch(`/sessions/${id}/resend`, { status: "pending" });
+            const res = await axiosSecure.patch(`/sessions/${id}/resend`, { status: "pending", rejectionFeedback: "", rejectionReason: "" });
             return res.data;
         },
         onSuccess: () => {
-            Swal.fire("Resent!", "Approval request has been resent and status updated to pending.", "success");
+            Swal.fire("Resent!", "Approval request has been resent.", "success");
             queryClient.invalidateQueries(["myCreatedSessions"]);
         },
         onError: (error) => {
-            Swal.fire("Error", error.message || "Failed to resend approval request.", "error");
+            Swal.fire("Error", error.message || "Failed to resend request.", "error");
         },
     });
 
     const handleResendRequest = (id) => {
         Swal.fire({
             title: "Resend Approval Request?",
-            text: "This will notify the admin to review it again and update status to pending.",
+            text: "Notify admin to re-review your session.",
             icon: "question",
             showCancelButton: true,
             confirmButtonColor: "#3085d6",
@@ -53,7 +50,7 @@ const MyCreatedSessions = () => {
         });
     };
 
-    const renderTable = (data, title, badgeColor, allowResend = false) => (
+    const renderTable = (data, title, badgeColor, allowResend = false, showRejectionDetails = false) => (
         <div className="mb-10 w-full overflow-x-auto">
             <h3 className={`text-xl font-semibold mb-4 text-${badgeColor}-600`}>{title}</h3>
             {data.length === 0 ? (
@@ -69,17 +66,23 @@ const MyCreatedSessions = () => {
                             <th className="px-4 py-3">Registration End</th>
                             <th className="px-4 py-3">Class Start</th>
                             <th className="px-4 py-3">Status</th>
+                            {showRejectionDetails && (
+                                <>
+                                    <th className="px-4 py-3">Rejection Reason</th>
+                                    <th className="px-4 py-3">Feedback</th>
+                                </>
+                            )}
                             {allowResend && <th className="px-4 py-3">Action</th>}
                         </tr>
                     </thead>
                     <tbody className="divide-y divide-gray-100">
                         {data.map((session, index) => (
                             <tr key={session._id} className="hover:bg-blue-50">
-                                <td className="px-4 py-3 whitespace-nowrap">{index + 1}</td>
-                                <td className="px-4 py-3 whitespace-nowrap">
+                                <td className="px-4 py-3">{index + 1}</td>
+                                <td className="px-4 py-3">
                                     {session.photoURL ? (
                                         <img
-                                            src={session.photoURL}
+                                            src={session?.photoURL}
                                             alt={session.title}
                                             className="h-12 w-12 object-cover rounded"
                                         />
@@ -90,22 +93,29 @@ const MyCreatedSessions = () => {
                                     )}
                                 </td>
                                 <td className="px-4 py-3 font-semibold">{session.title}</td>
-                                <td className="px-4 py-3 whitespace-nowrap">{session.registrationStart}</td>
-                                <td className="px-4 py-3 whitespace-nowrap">{session.registrationEnd}</td>
-                                <td className="px-4 py-3 whitespace-nowrap">{session.classStart}</td>
-                                <td className="px-4 py-3 whitespace-nowrap">
-                                    <span
-                                        className={`inline-block px-2 py-1 text-xs rounded-full bg-${badgeColor}-100 text-${badgeColor}-700`}
-                                    >
+                                <td className="px-4 py-3">{session.registrationStart}</td>
+                                <td className="px-4 py-3">{session.registrationEnd}</td>
+                                <td className="px-4 py-3">{session.classStart}</td>
+                                <td className="px-4 py-3">
+                                    <span className={`inline-block px-2 py-1 text-xs rounded-full bg-${badgeColor}-100 text-${badgeColor}-700`}>
                                         {session.status}
                                     </span>
                                 </td>
+                                {showRejectionDetails && (
+                                    <>
+                                        <td className="px-4 py-3 text-red-600">
+                                            {session.rejectionReason || "N/A"}
+                                        </td>
+                                        <td className="px-4 py-3 text-gray-700">
+                                            {session.rejectionFeedback || "No feedback"}
+                                        </td>
+                                    </>
+                                )}
                                 {allowResend && (
-                                    <td className="px-4 py-3 whitespace-nowrap">
+                                    <td className="px-4 py-3">
                                         <button
                                             onClick={() => handleResendRequest(session._id)}
                                             className="bg-blue-500 hover:bg-blue-600 text-white text-xs px-3 py-1 rounded"
-                                            title="Request re-approval from admin"
                                         >
                                             Resend Request
                                         </button>
@@ -132,7 +142,7 @@ const MyCreatedSessions = () => {
             ) : (
                 <>
                     {renderTable(approved, "Approved Sessions", "green")}
-                    {renderTable(rejected, "Rejected Sessions", "red", true)}
+                    {renderTable(rejected, "Rejected Sessions", "red", true, true)}
                 </>
             )}
         </div>
