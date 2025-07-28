@@ -21,6 +21,9 @@ import MyCreatedSessions from "../pages/Dashboard/MyCreatedSessions/MyCreatedSes
 import UploadMaterials from "../pages/Dashboard/UploadMaterials/UploadMaterials";
 import ViewAllMaterials from "../pages/Dashboard/ViewAllMaterials/ViewAllMaterials";
 import ViewAllUsers from "../pages/Dashboard/ViewAllUsers/ViewAllUsers";
+import ViewAllSessions from "../pages/Dashboard/ViewAllSessions/ViewAllSessions";
+import SessionUpdate from "../pages/Dashboard/ViewAllSessions/SessionUpdate";
+import AllMaterials from "../pages/Dashboard/AllMaterials/AllMaterials";
 
 
 export const router = createBrowserRouter([
@@ -116,11 +119,15 @@ export const router = createBrowserRouter([
             },
             {
                 path: 'view-all-sessions',
-                // Component: ViewAllSessions
+                Component: ViewAllSessions
             },
             {
-                path: 'view-all-materials',
-                Component: ViewAllMaterials
+                path: 'SessionUpdate/:id',
+                Component: SessionUpdate
+            },
+            {
+                path: 'all-materials',
+                Component: AllMaterials
             }
         ]
     },

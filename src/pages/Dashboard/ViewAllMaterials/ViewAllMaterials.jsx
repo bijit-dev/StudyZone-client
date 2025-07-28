@@ -14,7 +14,7 @@ const ViewAllMaterials = () => {
         queryKey: ["myMaterials", user?.email],
         enabled: !!user?.email,
         queryFn: async () => {
-            const res = await axiosSecure.get(`/materials?tutorEmail=${user.email}`);
+            const res = await axiosSecure.get(`/materials?email=${user.email}`);
             return res.data;
         },
     });
@@ -119,7 +119,7 @@ const ViewAllMaterials = () => {
                                             rel="noopener noreferrer"
                                             className="inline-block bg-blue-100 text-blue-700 text-xs px-2 py-1 rounded hover:bg-blue-200"
                                         >
-                                            🔗 Resource
+                                            🔗 Drive Link
                                         </a>
                                     </td>
                                     <td className="p-3 text-center space-y-1 md:space-y-0 md:space-x-2 flex flex-col md:flex-row justify-center">

@@ -119,9 +119,9 @@ const DashboardLayout = () => {
                     </li>
 
                     <li>
-                        <NavLink to="/dashboard/view-all-materials">
+                        <NavLink to="/dashboard/all-materials">
                             <FaFolderOpen className="inline-block mr-2" />
-                            View All Materials
+                            All Materials
                         </NavLink>
                     </li>
                 </ul>
