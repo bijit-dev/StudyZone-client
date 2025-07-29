@@ -16,7 +16,8 @@ const PaymentForm = () => {
 
     const [error, setError] = useState('');
 
-    const { isPending, data: parcelInfo = {} } = useQuery({
+    // Fetch session data
+    const { isPending, data: sessionInfo = {} } = useQuery({
         queryKey: ['session', sessionId],
         queryFn: async () => {
             const res = await axiosSecure.get(`/session/${sessionId}`);
@@ -28,7 +29,7 @@ const PaymentForm = () => {
         return '...loading'
     }
 
-    const amount = parcelInfo.cost;
+    const amount = sessionInfo.registrationFee;
     const amountInCents = amount * 100;
 
     const handleSubmit = async (e) => {
