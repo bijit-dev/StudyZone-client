@@ -45,7 +45,7 @@ const PaymentForm = () => {
         }
 
         // step- 1: validate the card
-        const { error, paymentMethod } = await stripe.createPaymentMethod({
+        const { error } = await stripe.createPaymentMethod({
             type: 'card',
             card
         })
@@ -55,7 +55,6 @@ const PaymentForm = () => {
         }
         else {
             setError('');
-            console.log('payment method', paymentMethod);
 
             // step-2: create payment intent
             const res = await axiosSecure.post('/create-payment-intent', {
@@ -84,29 +83,30 @@ const PaymentForm = () => {
                     console.log('Payment succeeded!');
                     const transactionId = result.paymentIntent.id;
                     // step-4 mark session paid also create payment history
-                    const paymentData = {
-                        sessionId,
-                        email: user.email,
-                        amount,
-                        transactionId: transactionId,
-                        paymentMethod: result.paymentIntent.payment_method_types
-                    }
+                    
+                    const { _id, ...bookingInfo } = sessionInfo;
+                    bookingInfo.sessionId = sessionId;
+                    bookingInfo.email = user.email;
+                    bookingInfo.status = "confirmed";
+                    bookingInfo.paid = true;
+                    bookingInfo.paymentMethod = result.paymentIntent.payment_method_types;
+                    bookingInfo.transactionId = transactionId;
+                    bookingInfo.registrationDate = new Date();
 
-                    const paymentRes = await axiosSecure.post('/payments', paymentData);
-                    if (paymentRes.data.insertedId) {
-
-                        // ✅ Show SweetAlert with transaction ID
-                        await Swal.fire({
-                            icon: 'success',
-                            title: 'Payment Successful!',
-                            html: `<strong>Transaction ID:</strong> <code>${transactionId}</code>`,
-                            confirmButtonText: 'Go to My Parcels',
-                        });
-
-                        // ✅ Redirect to /booked-session
-                        navigate('/dashboard/booked-session');
-
-                    }
+                    axiosSecure.post("/booking", bookingInfo).then((res) => {
+                        if (res.data.insertedId) {
+                            // Swal.fire("Booking Successful", "You’ve booked the session.", "success");
+                            // ✅ Show SweetAlert with transaction ID
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Payment Successful!',
+                                html: `<strong>Transaction ID:</strong> <code>${transactionId}</code>`,
+                                confirmButtonText: 'Go to my booked session',
+                            });
+                            
+                            navigate("/dashboard/view-booked-session");
+                        }
+                    });
                 }
             }
         }
