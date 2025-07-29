@@ -3,11 +3,11 @@ import Marquee from "react-fast-marquee";
 const OurPartners = () => {
     const logos = [
         "https://upload.wikimedia.org/wikipedia/commons/4/44/Microsoft_logo.svg",
-        "https://upload.wikimedia.org/wikipedia/commons/0/08/Google_Logo.svg",
-        "https://upload.wikimedia.org/wikipedia/commons/a/ab/Apple-logo.png",
-        "https://upload.wikimedia.org/wikipedia/commons/2/2f/Logo_of_Tesla_Motors.svg",
         "https://upload.wikimedia.org/wikipedia/commons/5/51/IBM_logo.svg",
-        "https://upload.wikimedia.org/wikipedia/commons/0/0e/NVIDIA_logo.svg",
+        "https://upload.wikimedia.org/wikipedia/commons/2/2f/Google_2015_logo.svg",
+        "https://upload.wikimedia.org/wikipedia/commons/4/44/Microsoft_logo.svg",
+        "https://upload.wikimedia.org/wikipedia/commons/a/a9/Amazon_logo.svg",
+
     ];
 
     return (
