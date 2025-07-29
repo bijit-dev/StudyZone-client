@@ -16,7 +16,7 @@ const DashboardHome = () => {
     if (role === 'student') {
         return <StudentDashboard></StudentDashboard>
     }
-    else if (role === 'Tutor') {
+    else if (role === 'tutor') {
         return <TutorDashboard></TutorDashboard>
     }
     else if (role === 'admin') {

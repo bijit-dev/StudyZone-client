@@ -28,6 +28,7 @@ import ViewAllSessions from "../pages/Dashboard/ViewAllSessions/ViewAllSessions"
 import SessionUpdate from "../pages/Dashboard/ViewAllSessions/SessionUpdate";
 import AllMaterials from "../pages/Dashboard/AllMaterials/AllMaterials";
 import Payment from "../pages/Dashboard/Payment/Payment";
+import Forbidden from "../pages/Forbidden/Forbidden";
 
 
 export const router = createBrowserRouter([
@@ -42,6 +43,10 @@ export const router = createBrowserRouter([
             {
                 path: 'tutors',
                 Component: Tutors
+            },
+            {
+                path: 'forbidden',
+                Component: Forbidden
             },
             {
                 path: 'study-sessions',
@@ -84,27 +89,22 @@ export const router = createBrowserRouter([
             },
             {
                 path: 'view-booked-session',
-                // Component: ViewBookedSession
                 element: <StudentRoute><ViewBookedSession></ViewBookedSession></StudentRoute>
             },
             {
                 path: 'booked-session/:id',
-                // Component: BookedSessionDetails
                 element: <StudentRoute><BookedSessionDetails></BookedSessionDetails></StudentRoute>
             },
             {
                 path: 'create-note',
-                // Component: CreateNote
                 element: <StudentRoute><CreateNote></CreateNote></StudentRoute>
             },
             {
                 path: 'manage-personal-notes',
-                // Component: ManagePersonalNotes
                 element: <StudentRoute><ManagePersonalNotes></ManagePersonalNotes></StudentRoute>
             },
             {
                 path: 'view-all-study-materials',
-                // Component: ViewAllStudyMaterials
                 element: <StudentRoute><ViewAllStudyMaterials></ViewAllStudyMaterials></StudentRoute>
             },
             // ✅ Private routes for tutor
@@ -127,7 +127,6 @@ export const router = createBrowserRouter([
             // ✅ Private routes for admin
             {
                 path: 'view-all-users',
-                // Component: 
                 element: <AdminRoute><ViewAllUsers></ViewAllUsers></AdminRoute>
             },
             {
@@ -137,12 +136,10 @@ export const router = createBrowserRouter([
             },
             {
                 path: 'SessionUpdate/:id',
-                // Component: 
                 element: <AdminRoute><SessionUpdate></SessionUpdate></AdminRoute>
             },
             {
                 path: 'all-materials',
-                // Component: 
                 element: <AdminRoute><AllMaterials></AllMaterials></AdminRoute>
             }
         ]

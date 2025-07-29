@@ -158,7 +158,7 @@ const SessionDetails = () => {
                                         : "bg-gray-300 text-gray-600 cursor-not-allowed"
                                     }`}
                             >
-                                {canBook ? "🚀 Book Now" : "🚫 Registration Closed"}
+                                {canBook ? "🚀 Book Now" : "🚫 DO NOT BOOK SESSION"}
                             </button>
                         )}
                     </div>

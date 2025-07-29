@@ -80,7 +80,6 @@ const PaymentForm = () => {
             } else {
                 setError('');
                 if (result.paymentIntent.status === 'succeeded') {
-                    console.log('Payment succeeded!');
                     const transactionId = result.paymentIntent.id;
                     // step-4 mark session paid also create payment history
                     

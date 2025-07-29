@@ -51,9 +51,7 @@ const ViewAllSessions = () => {
                 return { rejectionReason: reason, rejectionFeedback: feedback };
             }
         });
-
-        console.log(formValues);
-
+        
 
         if (formValues) {
             try {
