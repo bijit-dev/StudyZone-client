@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router";
-import useAxios from "../../../hooks/useAxios";
+import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import useAuth from "../../../hooks/useAuth";
 import Loader from "../../../components/Loader";
 
 const ViewBookedSession = () => {
     const [bookings, setBookings] = useState([]);
     const [loading, setLoading] = useState(true);
-    const axiosSecure = useAxios();
+    const axiosSecure = useAxiosSecure();
     const { user } = useAuth();
 
     useEffect(() => {
