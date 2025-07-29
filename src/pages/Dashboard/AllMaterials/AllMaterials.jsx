@@ -1,11 +1,11 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import Swal from "sweetalert2";
-import useAxios from "../../../hooks/useAxios";
+import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import useAuth from "../../../hooks/useAuth";
 
 const AllMaterials = () => {
     const { user } = useAuth();
-    const axiosSecure = useAxios();
+    const axiosSecure = useAxiosSecure();
     const queryClient = useQueryClient();
 
     // Fetch materials

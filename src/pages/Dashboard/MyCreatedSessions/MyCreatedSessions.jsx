@@ -1,11 +1,11 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import useAuth from "../../../hooks/useAuth";
-import useAxios from "../../../hooks/useAxios";
+import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import Swal from "sweetalert2";
 
 const MyCreatedSessions = () => {
     const { user } = useAuth();
-    const axiosSecure = useAxios();
+    const axiosSecure = useAxiosSecure();
     const queryClient = useQueryClient();
 
     const { data: sessions = [], isLoading } = useQuery({

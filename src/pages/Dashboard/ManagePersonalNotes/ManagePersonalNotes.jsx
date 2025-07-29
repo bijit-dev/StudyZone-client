@@ -2,13 +2,13 @@ import { useState } from "react";
 import Swal from "sweetalert2";
 import { MdDelete, MdEdit } from "react-icons/md";
 import useAuth from "../../../hooks/useAuth";
-import useAxios from "../../../hooks/useAxios";
+import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import Loader from "../../../components/Loader";
 
 const ManagePersonalNotes = () => {
     const { user } = useAuth();
-    const axiosSecure = useAxios();
+    const axiosSecure = useAxiosSecure();
     const queryClient = useQueryClient();
     const [editNote, setEditNote] = useState(null);
 
@@ -75,49 +75,49 @@ const ManagePersonalNotes = () => {
         <div className="w-full max-w-7xl mx-auto px-4 py-10">
             <h2 className="text-3xl font-bold text-indigo-700 mb-6 text-center">📚 Manage Your Notes</h2>
 
-            {isLoading ? <Loader/>
-            : notes.length === 0 ? (
-                <p className="text-center text-gray-500">You haven't added any notes yet.</p>
-            ) : (
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {notes.map((note) => (
-                        <div
-                            key={note._id}
-                            className="bg-white shadow border rounded-xl p-5 w-full relative"
-                        >
-                            <div className="absolute top-3 right-3 flex gap-2">
-                                <button
-                                    onClick={() => setEditNote(note)}
-                                    className="text-blue-600 hover:text-blue-800"
-                                    title="Edit Note"
-                                >
-                                    <MdEdit size={20} />
-                                </button>
-                                <button
-                                    onClick={() => handleDelete(note._id)}
-                                    className="text-red-500 hover:text-red-700"
-                                    title="Delete Note"
-                                >
-                                    <MdDelete size={20} />
-                                </button>
-                            </div>
+            {isLoading ? <Loader />
+                : notes.length === 0 ? (
+                    <p className="text-center text-gray-500">You haven't added any notes yet.</p>
+                ) : (
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                        {notes.map((note) => (
+                            <div
+                                key={note._id}
+                                className="bg-white shadow border rounded-xl p-5 w-full relative"
+                            >
+                                <div className="absolute top-3 right-3 flex gap-2">
+                                    <button
+                                        onClick={() => setEditNote(note)}
+                                        className="text-blue-600 hover:text-blue-800"
+                                        title="Edit Note"
+                                    >
+                                        <MdEdit size={20} />
+                                    </button>
+                                    <button
+                                        onClick={() => handleDelete(note._id)}
+                                        className="text-red-500 hover:text-red-700"
+                                        title="Delete Note"
+                                    >
+                                        <MdDelete size={20} />
+                                    </button>
+                                </div>
 
-                            <h3 className="text-xl font-semibold text-indigo-600 mb-2">
-                                {note.title}
-                            </h3>
-                            <p className="text-gray-700 text-sm whitespace-pre-line overflow-auto">{note.description}</p>
-                            <p className="text-xs text-gray-400 mt-3">
-                                Created on:{" "}
-                                {new Date(note.createdAt).toLocaleDateString("en-US", {
-                                    year: "numeric",
-                                    month: "short",
-                                    day: "numeric",
-                                })}
-                            </p>
-                        </div>
-                    ))}
-                </div>
-            )}
+                                <h3 className="text-xl font-semibold text-indigo-600 mb-2">
+                                    {note.title}
+                                </h3>
+                                <p className="text-gray-700 text-sm whitespace-pre-line overflow-auto">{note.description}</p>
+                                <p className="text-xs text-gray-400 mt-3">
+                                    Created on:{" "}
+                                    {new Date(note.createdAt).toLocaleDateString("en-US", {
+                                        year: "numeric",
+                                        month: "short",
+                                        day: "numeric",
+                                    })}
+                                </p>
+                            </div>
+                        ))}
+                    </div>
+                )}
 
             {/* Edit Modal */}
             {editNote && (

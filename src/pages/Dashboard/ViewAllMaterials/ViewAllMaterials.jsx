@@ -1,12 +1,12 @@
 import { useState } from "react";
 import useAuth from "../../../hooks/useAuth";
-import useAxios from "../../../hooks/useAxios";
+import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import Swal from "sweetalert2";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 
 const ViewAllMaterials = () => {
     const { user } = useAuth();
-    const axiosSecure = useAxios();
+    const axiosSecure = useAxiosSecure();
     const queryClient = useQueryClient();
     const [editingMaterial, setEditingMaterial] = useState(null);
 

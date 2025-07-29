@@ -1,10 +1,10 @@
 import { useQuery } from "@tanstack/react-query";
-import useAxios from "../../../hooks/useAxios";
+import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import useAuth from "../../../hooks/useAuth";
 
 const ViewAllStudyMaterials = () => {
     const { user } = useAuth();
-    const axiosSecure = useAxios();
+    const axiosSecure = useAxiosSecure();
 
     // Fetch booked sessions
     const { data: bookedSessions = [], isLoading: loadingSessions } = useQuery({

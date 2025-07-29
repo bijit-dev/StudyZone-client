@@ -1,12 +1,12 @@
 import { useState } from "react";
 import Swal from "sweetalert2";
 import useAuth from "../../../hooks/useAuth";
-import useAxios from "../../../hooks/useAxios";
+import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import { useQuery } from "@tanstack/react-query";
 
 const UploadMaterials = () => {
     const { user } = useAuth();
-    const axiosSecure = useAxios();
+    const axiosSecure = useAxiosSecure();
     const [selectedSessionId, setSelectedSessionId] = useState("");
     const [loading, setLoading] = useState(false);
 

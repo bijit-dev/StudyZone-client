@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import { FaStar } from "react-icons/fa";
-import useAxios from "../../hooks/useAxios";
+import useAxiosSecure from "../../hooks/useAxiosSecure";
 
 const SessionReviewDisplay = ({ sessionId }) => {
     const [reviews, setReviews] = useState([]);
     const [averageRating, setAverageRating] = useState(0);
-    const axiosSecure = useAxios();
+    const axiosSecure = useAxiosSecure();
 
     useEffect(() => {
         if (!sessionId) return;
@@ -38,8 +38,8 @@ const SessionReviewDisplay = ({ sessionId }) => {
                         <FaStar
                             key={i}
                             className={`text-lg ${i < Math.round(averageRating)
-                                    ? "text-yellow-400"
-                                    : "text-gray-300"
+                                ? "text-yellow-400"
+                                : "text-gray-300"
                                 }`}
                         />
                     ))}

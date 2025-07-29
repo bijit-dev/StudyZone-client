@@ -1,7 +1,7 @@
 import { useNavigate, useParams } from "react-router";
 import { useEffect, useState } from "react";
 import Loader from "../../components/Loader";
-import useAxios from "../../hooks/useAxios";
+import useAxiosSecure from "../../hooks/useAxiosSecure";
 import useAuth from "../../hooks/useAuth";
 import Swal from "sweetalert2";
 import SessionReviewDisplay from "./SessionReviewDisplay";
@@ -18,7 +18,7 @@ const SessionDetails = () => {
     const { id } = useParams();
     const [session, setSession] = useState(null);
     const [currentUser, setCurrentUser] = useState(null);
-    const axiosSecure = useAxios();
+    const axiosSecure = useAxiosSecure();
     const { user } = useAuth();
     const navigate = useNavigate();
     const [bookingData, setBookingData] = useState([]);

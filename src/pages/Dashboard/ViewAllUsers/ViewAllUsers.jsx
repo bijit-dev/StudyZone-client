@@ -1,11 +1,11 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
-import useAxios from "../../../hooks/useAxios";
+import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import Swal from "sweetalert2";
 import { FaUserEdit, FaSearch } from "react-icons/fa";
 
 const ViewAllUsers = () => {
-    const axiosSecure = useAxios();
+    const axiosSecure = useAxiosSecure();
     const queryClient = useQueryClient();
     const [search, setSearch] = useState("");
 

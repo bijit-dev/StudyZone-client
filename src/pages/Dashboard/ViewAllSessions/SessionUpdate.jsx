@@ -2,11 +2,11 @@ import { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import Swal from "sweetalert2";
 import { useNavigate, useParams } from "react-router";
-import useAxios from "../../../hooks/useAxios";
+import useAxiosSecure from "../../../hooks/useAxiosSecure";
 
 const SessionUpdate = () => {
     const { id } = useParams();
-    const axiosSecure = useAxios();
+    const axiosSecure = useAxiosSecure();
     const navigate = useNavigate();
     const queryClient = useQueryClient();
 

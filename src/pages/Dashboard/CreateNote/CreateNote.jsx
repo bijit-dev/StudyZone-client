@@ -1,11 +1,11 @@
 import { useState } from "react";
 import Swal from "sweetalert2";
 import useAuth from "../../../hooks/useAuth";
-import useAxios from "../../../hooks/useAxios";
+import useAxiosSecure from "../../../hooks/useAxiosSecure";
 
 const CreateNote = () => {
     const { user } = useAuth();
-    const axiosSecure = useAxios();
+    const axiosSecure = useAxiosSecure();
 
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");

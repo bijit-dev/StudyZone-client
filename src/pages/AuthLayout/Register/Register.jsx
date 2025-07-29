@@ -7,7 +7,7 @@ import Swal from "sweetalert2";
 import { auth } from "../../../firebase/firebase.init";
 import { updateProfile } from "firebase/auth";
 import SocialLogin from "../SocialLogin/SocialLogin";
-import useAxios from "../../../hooks/useAxios";
+import useAxiosSecure from "../../../hooks/useAxiosSecure";
 
 const Register = () => {
     const { createUser } = useAuth();
@@ -16,7 +16,7 @@ const Register = () => {
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
     const [passwordError, setPasswordError] = useState("");
-    const axiosInstance = useAxios();
+    const axiosInstance = useAxiosSecure();
     const location = useLocation();
     const navigate = useNavigate();
     const from = location.state?.from || '/';

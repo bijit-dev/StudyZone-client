@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { FaStar } from "react-icons/fa";
-import useAxios from "../../../hooks/useAxios";
+import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import useAuth from "../../../hooks/useAuth";
 
 const SessionReviewSection = ({ sessionId }) => {
@@ -10,7 +10,7 @@ const SessionReviewSection = ({ sessionId }) => {
     const [rating, setRating] = useState(0);
     const [submitting, setSubmitting] = useState(false);
     const { user } = useAuth();
-    const axiosSecure = useAxios();
+    const axiosSecure = useAxiosSecure();
 
     useEffect(() => {
         axiosSecure.get(`/reviews?sessionId=${sessionId}`).then((res) => {

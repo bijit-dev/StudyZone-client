@@ -1,12 +1,12 @@
 import { Link, useParams } from "react-router";
 import { useEffect, useState } from "react";
-import useAxios from "../../../hooks/useAxios";
+import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import Loader from "../../../components/Loader";
 import SessionReviewSection from "./SessionReviewSection";
 
 const BookedSessionDetails = () => {
     const { id } = useParams();
-    const axiosSecure = useAxios();
+    const axiosSecure = useAxiosSecure();
     const [booking, setBooking] = useState(null);
     const [loading, setLoading] = useState(true);
 
@@ -56,9 +56,9 @@ const BookedSessionDetails = () => {
                 <div className="mt-6 border-t pt-4 space-y-2 text-gray-800 text-sm md:text-base">
                     <p><strong>Description:</strong> {booking.description || "N/A"}</p>
                     <p><strong>Duration:</strong> {booking.duration || "N/A"}</p>
-                    
+
                     <p><strong>Class Time:</strong> {booking.classStart} → {booking.classEnd}</p>
-                    
+
                 </div>
             </div>
             <SessionReviewSection sessionId={booking.sessionId} />
