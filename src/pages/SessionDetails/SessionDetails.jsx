@@ -26,42 +26,55 @@ const SessionDetails = () => {
     useEffect(() => {
         if (!id || !user?.email) return;
 
-        axiosSecure.get(`/session/${id}`).then((res) => setSession(res.data)).catch(() => { });
-        axiosSecure.get(`/users/${user.email}`).then(res => setCurrentUser(res.data)).catch(() => { });
+        axiosSecure.get(`/session/${id}`)
+            .then((res) => setSession(res.data))
+            .catch(() => { });
+
+        axiosSecure.get(`/users/${user.email}`)
+            .then((res) => setCurrentUser(res.data))
+            .catch(() => { });
     }, [id, user?.email, axiosSecure]);
 
     useEffect(() => {
         if (!user?.email) return;
+
         axiosSecure.get(`/booked?email=${user.email}`)
-            .then(res => setBookingData(res.data))
+            .then((res) => setBookingData(res.data))
             .catch(() => { });
     }, [user?.email, axiosSecure]);
 
-    const newBookingData = bookingData.find(data =>
-        data?.sessionId === session?._id && data?.email === user?.email
+    const newBookingData = bookingData.find(
+        (data) => data?.sessionId === session?._id && data?.email === user?.email
     );
 
     const handleBooking = () => {
-        const { _id, ...bookingInfo } = session;
-        bookingInfo.sessionId = id;
-        bookingInfo.email = user.email;
-        bookingInfo.status = "confirmed";
-        bookingInfo.paid = true;
-        bookingInfo.registrationDate = new Date();
+        if (!id) return;
 
-        axiosSecure.post("/booking", bookingInfo).then(res => {
-            if (res.data.insertedId) {
-                Swal.fire("Booking Successful", "You’ve booked the session.", "success");
-                navigate("/dashboard/view-booked-session");
-            }
-        });
+        if (session.registrationFee === 0) {
+            const { _id, ...bookingInfo } = session;
+            bookingInfo.sessionId = id;
+            bookingInfo.email = user.email;
+            bookingInfo.status = "confirmed";
+            bookingInfo.paid = true;
+            bookingInfo.registrationDate = new Date();
+
+            axiosSecure.post("/booking", bookingInfo).then((res) => {
+                if (res.data.insertedId) {
+                    Swal.fire("Booking Successful", "You’ve booked the session.", "success");
+                    navigate("/dashboard/view-booked-session");
+                }
+            });
+        } else {
+            navigate(`/dashboard/payment/${id}`);
+        }
     };
 
-    if (!session) return <Loader />;
+    if (!session || !currentUser) return <Loader />;
 
     const now = new Date();
     const isClosed = new Date(session.registrationEnd) < now;
     const isUpcoming = new Date(session.registrationStart) > now;
+    const canBook = !isClosed && user && currentUser?.role === "student" && !newBookingData;
 
     return (
         <div className="max-w-7xl mx-auto px-4 py-10">
@@ -73,7 +86,10 @@ const SessionDetails = () => {
                 />
 
                 <div className="p-6 sm:p-8">
-                    <h1 className="text-3xl sm:text-4xl font-extrabold text-indigo-700 mb-3">{session.title}</h1>
+                    <h1 className="text-3xl sm:text-4xl font-extrabold text-indigo-700 mb-3">
+                        {session.title}
+                    </h1>
+
                     <p className="text-gray-600 mb-6 text-sm sm:text-base leading-relaxed">
                         {session.description}
                     </p>
@@ -106,42 +122,44 @@ const SessionDetails = () => {
                         </div>
                         <div>
                             <span className="font-medium">📌 Status:</span>{" "}
-                            <span className={`font-semibold ${isUpcoming ? "text-blue-600"
-                                    : isClosed ? "text-gray-500"
-                                        : "text-green-600"
+                            <span className={`font-semibold ${isUpcoming
+                                ? "text-blue-600"
+                                : isClosed
+                                    ? "text-gray-500"
+                                    : "text-green-600"
                                 }`}>
                                 {isUpcoming ? "Upcoming" : isClosed ? "Closed" : "Ongoing"}
                             </span>
                         </div>
                     </div>
 
-                    {/* Booking Logic */}
+                    {/* Booking Button */}
                     <div className="mt-6">
                         {newBookingData ? (
-                            <button
-                                disabled
-                                className="w-full bg-gray-300 text-gray-600 font-semibold px-4 py-3 rounded-xl cursor-not-allowed"
-                            >
-                                ✅ Already Booked
-                            </button>
-                        ) : (
-                            <>
-                                {(isClosed || !user || currentUser?.role !== "student") ? (
-                                    <button
-                                        disabled
-                                        className="w-full bg-gray-300 text-gray-600 font-semibold px-4 py-3 rounded-xl cursor-not-allowed"
-                                    >
-                                        🚫 Registration Closed
-                                    </button>
+                            <div className="flex flex-col gap-2">
+                                <button
+                                    disabled
+                                    className="w-full bg-gray-300 text-gray-600 font-semibold px-4 py-3 rounded-xl cursor-not-allowed"
+                                >
+                                    ✅ Already Booked
+                                </button>
+                                {newBookingData.paid ? (
+                                    <span className="text-green-600 font-medium">💰 Payment Complete</span>
                                 ) : (
-                                    <button
-                                        onClick={handleBooking}
-                                        className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold px-4 py-3 rounded-xl transition duration-300"
-                                    >
-                                        🚀 Book Now
-                                    </button>
+                                    <span className="text-yellow-600 font-medium">⌛ Payment Pending</span>
                                 )}
-                            </>
+                            </div>
+                        ) : (
+                            <button
+                                onClick={handleBooking}
+                                disabled={!canBook}
+                                className={`w-full px-4 py-3 rounded-xl transition duration-300 font-semibold 
+                    ${canBook ? "bg-indigo-600 hover:bg-indigo-700 text-white"
+                                        : "bg-gray-300 text-gray-600 cursor-not-allowed"
+                                    }`}
+                            >
+                                {canBook ? "🚀 Book Now" : "🚫 Registration Closed"}
+                            </button>
                         )}
                     </div>
                 </div>

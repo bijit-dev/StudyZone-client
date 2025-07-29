@@ -56,10 +56,9 @@ const Tutors = () => {
                                         className="w-full h-full object-cover rounded-full border-4 border-blue-100 shadow-sm"
                                     />
                                 </div>
-                                <h3 className="text-xl font-semibold text-gray-800">
-                                    {tutor?.name}
+                                <h3 className="text-2xl font-semibold text-gray-800">
+                                    Name: {tutor?.name}
                                 </h3>
-                                <p className="text-sm text-gray-500 mt-1">{tutor?.email}</p>
                             </div>
                         </div>
                     ))}

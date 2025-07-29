@@ -1,11 +1,29 @@
 import { NavLink, Outlet } from 'react-router';
-import { FaChalkboardTeacher, FaHome, FaBookOpen, FaPlusCircle, FaClipboardList, FaFolderOpen, FaUpload, FaListUl, FaUsers } from 'react-icons/fa';
+import { FaChalkboardTeacher, FaHome, FaBookOpen, FaPlusCircle, FaClipboardList, FaFolderOpen, FaUpload, FaListUl, FaUsers, FaSignOutAlt } from 'react-icons/fa';
 import StudyZoneLogo from '../components/StudyZoneLogo';
-// import useUserRole from '../hooks/useUserRole';
+import useUserRole from '../hooks/useUserRole';
+import useAuth from '../hooks/useAuth';
+import Swal from 'sweetalert2';
 
 const DashboardLayout = () => {
+    const { role, roleLoading } = useUserRole();
+    const { signOutUser } = useAuth();
 
-    // const { role, roleLoading } = useUserRole();
+    const handleLogOut = () => {
+        signOutUser()
+            .then(() => {
+                // Optionally, you can add a success message or redirect here
+                Swal.fire({
+                    title: 'Logged out successfully',
+                    icon: 'success',
+                    timer: 1000,
+                    showConfirmButton: false
+                });
+            })
+            .catch((error) => {
+                console.error("Error signing out:", error);
+            });
+    }
 
     return (
         <div className="drawer lg:drawer-open">
@@ -50,80 +68,97 @@ const DashboardLayout = () => {
                             Home
                         </NavLink>
                     </li>
+                    {/* student routes */}
+                    {!roleLoading && role === 'student' && <>
+                        <li>
+                            <NavLink to="/dashboard/view-booked-session">
+                                <FaBookOpen className="inline-block mr-2" />
+                                View Booked Sessions
+                            </NavLink>
+                        </li>
+
+                        <li>
+                            <NavLink to="/dashboard/create-note">
+                                <FaPlusCircle className="inline-block mr-2" />
+                                Create Note
+                            </NavLink>
+                        </li>
+
+                        <li>
+                            <NavLink to="/dashboard/manage-personal-notes">
+                                <FaClipboardList className="inline-block mr-2" />
+                                Manage Personal Notes
+                            </NavLink>
+                        </li>
+
+                        <li>
+                            <NavLink to="/dashboard/view-all-study-materials">
+                                <FaFolderOpen className="inline-block mr-2" />
+                                View All Study Materials
+                            </NavLink>
+                        </li></>}
+
+                    {/* tutor routes  */}
+                    {role === 'tutor' && !roleLoading && <>
+                        <li>
+                            <NavLink to="/dashboard/create-session">
+                                <FaPlusCircle className="inline-block mr-2" />
+                                Create Session
+                            </NavLink>
+                        </li>
+                        <li>
+                            <NavLink to="/dashboard/view-my-sessions">
+                                <FaListUl className="inline-block mr-2" />
+                                My Created Sessions
+                            </NavLink>
+                        </li>
+
+                        <li>
+                            <NavLink to="/dashboard/upload-materials">
+                                <FaUpload className="inline-block mr-2" />
+                                Upload Materials
+                            </NavLink>
+                        </li>
+
+                        <li>
+                            <NavLink to="/dashboard/view-all-materials">
+                                <FaFolderOpen className="inline-block mr-2" />
+                                View All Materials
+                            </NavLink>
+                        </li>
+                    </>}
+
+                    {/* admin routes */}
+                    {role === 'admin' && !roleLoading && <>
+                        <li>
+                            <NavLink to="/dashboard/view-all-users">
+                                <FaUsers className="inline-block mr-2" />
+                                View All Users
+                            </NavLink>
+                        </li>
+
+                        <li>
+                            <NavLink to="/dashboard/view-all-sessions">
+                                <FaChalkboardTeacher className="inline-block mr-2" />
+                                View All Sessions
+                            </NavLink>
+                        </li>
+
+                        <li>
+                            <NavLink to="/dashboard/all-materials">
+                                <FaFolderOpen className="inline-block mr-2" />
+                                All Materials
+                            </NavLink>
+                        </li>
+                    </>}
+
                     <li>
-                        <NavLink to="/dashboard/view-booked-session">
-                            <FaBookOpen className="inline-block mr-2" />
-                            View Booked Sessions
+                        <NavLink to="/" onClick={handleLogOut}>
+                            <FaSignOutAlt className="inline-block mr-2" />
+                            Log Out
                         </NavLink>
                     </li>
 
-                    <li>
-                        <NavLink to="/dashboard/create-note">
-                            <FaPlusCircle className="inline-block mr-2" />
-                            Create Note
-                        </NavLink>
-                    </li>
-
-                    <li>
-                        <NavLink to="/dashboard/manage-personal-notes">
-                            <FaClipboardList className="inline-block mr-2" />
-                            Manage Personal Notes
-                        </NavLink>
-                    </li>
-
-                    <li>
-                        <NavLink to="/dashboard/view-all-study-materials">
-                            <FaFolderOpen className="inline-block mr-2" />
-                            View All Study Materials
-                        </NavLink>
-                    </li>
-                    <li>
-                        <NavLink to="/dashboard/create-session">
-                            <FaPlusCircle className="inline-block mr-2" />
-                            Create Session
-                        </NavLink>
-                    </li>
-                    <li>
-                        <NavLink to="/dashboard/view-my-sessions">
-                            <FaListUl className="inline-block mr-2" />
-                            My Created Sessions
-                        </NavLink>
-                    </li>
-
-                    <li>
-                        <NavLink to="/dashboard/upload-materials">
-                            <FaUpload className="inline-block mr-2" />
-                            Upload Materials
-                        </NavLink>
-                    </li>
-
-                    <li>
-                        <NavLink to="/dashboard/view-all-materials">
-                            <FaFolderOpen className="inline-block mr-2" />
-                            View All Materials
-                        </NavLink>
-                    </li>
-
-                    <li>
-                        <NavLink to="/dashboard/view-all-users">
-                            <FaUsers className="inline-block mr-2" />
-                            View All Users
-                        </NavLink>
-                    </li>
-
-                    <li>
-                        <NavLink to="/dashboard/view-all-sessions">
-                            <FaChalkboardTeacher className="inline-block mr-2" />
-                            View All Sessions
-                        </NavLink>
-                    </li>
-
-                    <li>
-                        <NavLink to="/dashboard/all-materials">
-                            <FaFolderOpen className="inline-block mr-2" />
-                            All Materials
-                        </NavLink>
-                    </li>
                 </ul>
             </div>
         </div>

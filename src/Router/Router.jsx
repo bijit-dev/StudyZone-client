@@ -8,6 +8,9 @@ import AuthLayout from "../Layout/AuthLayout";
 import Register from "../pages/AuthLayout/Register/Register";
 import LogIn from "../pages/AuthLayout/LogIn/LogIn";
 import PrivateRoute from "../Routes/PrivateRoute";
+import StudentRoute from "../Routes/StudentRoute";
+import AdminRoute from "../Routes/AdminRoute";
+import TutorRoute from "../Routes/TutorRoute";
 import DashboardLayout from "../Layout/DashboardLayout";
 import DashboardHome from "../pages/Dashboard/DashboardHome/DashboardHome";
 import CreateSession from "../pages/Dashboard/CreateSession/CreateSession";
@@ -24,6 +27,7 @@ import ViewAllUsers from "../pages/Dashboard/ViewAllUsers/ViewAllUsers";
 import ViewAllSessions from "../pages/Dashboard/ViewAllSessions/ViewAllSessions";
 import SessionUpdate from "../pages/Dashboard/ViewAllSessions/SessionUpdate";
 import AllMaterials from "../pages/Dashboard/AllMaterials/AllMaterials";
+import Payment from "../pages/Dashboard/Payment/Payment";
 
 
 export const router = createBrowserRouter([
@@ -75,58 +79,71 @@ export const router = createBrowserRouter([
             },
             // ✅ Private routes for student
             {
+                path: "payment/:sessionId",
+                element: <StudentRoute><Payment></Payment></StudentRoute>
+            },
+            {
                 path: 'view-booked-session',
-                Component: ViewBookedSession
+                // Component: ViewBookedSession
+                element: <StudentRoute><ViewBookedSession></ViewBookedSession></StudentRoute>
             },
             {
                 path: 'booked-session/:id',
-                Component: BookedSessionDetails
+                // Component: BookedSessionDetails
+                element: <StudentRoute><BookedSessionDetails></BookedSessionDetails></StudentRoute>
             },
             {
                 path: 'create-note',
-                Component: CreateNote
+                // Component: CreateNote
+                element: <StudentRoute><CreateNote></CreateNote></StudentRoute>
             },
             {
                 path: 'manage-personal-notes',
-                Component: ManagePersonalNotes
+                // Component: ManagePersonalNotes
+                element: <StudentRoute><ManagePersonalNotes></ManagePersonalNotes></StudentRoute>
             },
             {
                 path: 'view-all-study-materials',
-                Component: ViewAllStudyMaterials
+                // Component: ViewAllStudyMaterials
+                element: <StudentRoute><ViewAllStudyMaterials></ViewAllStudyMaterials></StudentRoute>
             },
             // ✅ Private routes for tutor
             {
                 path: 'create-session',
-                Component: CreateSession
+                element: <TutorRoute><CreateSession></CreateSession></TutorRoute>
             },
             {
                 path: "view-my-sessions",
-                Component: MyCreatedSessions
+                element: <TutorRoute><MyCreatedSessions></MyCreatedSessions></TutorRoute>
             },
             {
                 path: 'upload-materials',
-                Component: UploadMaterials
+                element: <TutorRoute><UploadMaterials></UploadMaterials></TutorRoute>
             },
             {
                 path: 'view-all-materials',
-                Component: ViewAllMaterials
+                element: <TutorRoute><ViewAllMaterials></ViewAllMaterials></TutorRoute>
             },
             // ✅ Private routes for admin
             {
                 path: 'view-all-users',
-                Component: ViewAllUsers
+                // Component: 
+                element: <AdminRoute><ViewAllUsers></ViewAllUsers></AdminRoute>
             },
             {
                 path: 'view-all-sessions',
-                Component: ViewAllSessions
+                // Component: 
+                element: <AdminRoute><ViewAllSessions></ViewAllSessions></AdminRoute>
             },
             {
                 path: 'SessionUpdate/:id',
-                Component: SessionUpdate
+                // Component: 
+                element: <AdminRoute><SessionUpdate></SessionUpdate></AdminRoute>
             },
             {
                 path: 'all-materials',
-                Component: AllMaterials
+                // Component: 
+                element: <AdminRoute><AllMaterials></AllMaterials></AdminRoute>
             }
         ]
     },

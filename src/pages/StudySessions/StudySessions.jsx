@@ -7,14 +7,14 @@ const StudySessions = () => {
     const axiosSecure = useAxios();
 
     const { data: sessions = [], isLoading, isError } = useQuery({
-        queryKey: ["studySessions"],
+        queryKey: ["approvedSessions"],
         queryFn: async () => {
-            const res = await axiosSecure.get("/sessions"); // Adjust API endpoint
+            const res = await axiosSecure.get("/study-sessions"); // Adjust API endpoint
             return res.data;
         },
     });
 
-    if (isLoading) return <Loader/>;
+    if (isLoading) return <Loader />;
 
     if (isError) {
         return (
@@ -49,7 +49,7 @@ const StudySessions = () => {
                     <div className="grid gap-8 grid-cols-1 md:grid-cols-3 lg:grid-cols-4 mb-12">
                         {
                             ongoingSessions.map(session => (
-                            <StudyScssionCard key={session._id} session={session} now={now} />
+                                <StudyScssionCard key={session._id} session={session} now={now} />
                             ))
                         }
                     </div>
@@ -63,7 +63,7 @@ const StudySessions = () => {
                     <div className="grid gap-8 grid-cols-1 md:grid-cols-3 lg:grid-cols-4  mb-12">
                         {upcomingSessions.map(session => (
                             <StudyScssionCard key={session._id} session={session} now={now} />
-                            ))}
+                        ))}
                     </div>
                 </>
             )}
@@ -75,7 +75,7 @@ const StudySessions = () => {
                     <div className="grid gap-8 grid-cols-1 md:grid-cols-3 lg:grid-cols-4">
                         {closedSessions.map(session => (
                             <StudyScssionCard key={session._id} session={session} now={now} />
-                            ))}
+                        ))}
                     </div>
                 </>
             )}

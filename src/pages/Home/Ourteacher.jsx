@@ -35,10 +35,9 @@ const Ourteacher = () => {
                             alt={teacher.name}
                             className="w-24 h-24 rounded-full mx-auto mb-4 object-cover border"
                         />
-                        <h2 className="text-lg font-semibold text-gray-800">
+                        <h2 className="text-2xl font-semibold text-gray-800">
                             {teacher.name}
                         </h2>
-                        <p className="text-sm text-gray-600 mb-2">{teacher.email}</p>
                     </div>
                 ))}
             </Marquee>
