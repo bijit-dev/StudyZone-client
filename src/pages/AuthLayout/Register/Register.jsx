@@ -53,7 +53,6 @@ const Register = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
         const form = e.target;
-        const role = form.role.value;
         const fullName = form.fullName.value;
         const email = form.email.value;
         const password = form.password.value;
@@ -93,7 +92,7 @@ const Register = () => {
                             name: fullName,
                             photoURL: photoURL,
                             email: email,
-                            role: role, // default role
+                            role: "student", // default role
                             created_at: new Date().toISOString(),
                             last_log_in: new Date().toISOString()
                         }
@@ -134,36 +133,6 @@ const Register = () => {
                 </div>
 
                 <form onSubmit={handleSubmit} className="space-y-5">
-
-                    {/* User Role */}
-                    <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">
-                            Register As
-                        </label>
-                        <div className="flex items-center gap-4">
-                            <label className="inline-flex items-center btn btn-accent btn-outline hover:text-white  ">
-                                <input
-                                    type="radio"
-                                    name="role"
-                                    value="student"
-                                    className="form-radio text-indigo-600"
-                                    defaultChecked
-                                    required
-                                />
-                                <span className="ml-2 ">Student</span>
-                            </label>
-                            <label className="inline-flex items-center btn btn-accent btn-outline hover:text-white">
-                                <input
-                                    type="radio"
-                                    name="role"
-                                    value="Tutor"
-                                    className="form-radio text-indigo-600"
-                                    required
-                                />
-                                <span className="ml-2  ">Tutor</span>
-                            </label>
-                        </div>
-                    </div>
 
                     {/* Full Name */}
                     <div>

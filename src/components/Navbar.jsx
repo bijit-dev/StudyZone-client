@@ -62,6 +62,9 @@ const Navbar = () => {
                                         </div>
                                     </ul>
                                 </div>
+                                <div className="hidden lg:flex">
+                                    <NavLink onClick={handleLogOut} className={({ isActive }) => isActive ? "active btn btn-success rounded-lg" : "btn btn-primary hover:btn-success rounded-lg"}>Log Out</NavLink>
+                                </div>
                             </div>
                             :
                             <>
