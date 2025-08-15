@@ -29,7 +29,8 @@ import SessionUpdate from "../pages/Dashboard/ViewAllSessions/SessionUpdate";
 import AllMaterials from "../pages/Dashboard/AllMaterials/AllMaterials";
 import Payment from "../pages/Dashboard/Payment/Payment";
 import Forbidden from "../pages/Forbidden/Forbidden";
-
+import Profile from "../pages/Profile/Profile";
+import Contact from "../pages/Home/Contact";
 
 export const router = createBrowserRouter([
     {
@@ -53,99 +54,106 @@ export const router = createBrowserRouter([
                 Component: StudySessions
             },
             {
-                path: 'session/:id',
-                Component: SessionDetails,
-            }
-
-        ]
-    },
-    {
-        path: '/',
-        Component: AuthLayout,
-        children: [
-            {
-                path: 'register',
-                Component: Register
+                path: 'contact',
+                Component: Contact,
             },
             {
-                path: 'login',
-                Component: LogIn
-            }
-        ]
-    }, {
-        path: '/dashboard',
+                path: 'session/:id',
+                element: <PrivateRoute><SessionDetails /></PrivateRoute>
+            },
+            {
+                path: 'profile',
+                element: <PrivateRoute><Profile /></PrivateRoute>,
+            },
+]
+    },
+{
+    path: '/',
+        Component: AuthLayout,
+            children: [
+                {
+                    path: 'register',
+                    Component: Register
+                },
+                {
+                    path: 'login',
+                    Component: LogIn
+                }
+            ]
+}, {
+    path: '/dashboard',
         element: <PrivateRoute>
             <DashboardLayout></DashboardLayout>
         </PrivateRoute>,
-        children: [
-            {
-                index: true,
-                Component: DashboardHome
-            },
-            // ✅ Private routes for student
-            {
-                path: "payment/:sessionId",
-                element: <StudentRoute><Payment></Payment></StudentRoute>
-            },
-            {
-                path: 'view-booked-session',
-                element: <StudentRoute><ViewBookedSession></ViewBookedSession></StudentRoute>
-            },
-            {
-                path: 'booked-session/:id',
-                element: <StudentRoute><BookedSessionDetails></BookedSessionDetails></StudentRoute>
-            },
-            {
-                path: 'create-note',
-                element: <StudentRoute><CreateNote></CreateNote></StudentRoute>
-            },
-            {
-                path: 'manage-personal-notes',
-                element: <StudentRoute><ManagePersonalNotes></ManagePersonalNotes></StudentRoute>
-            },
-            {
-                path: 'view-all-study-materials',
-                element: <StudentRoute><ViewAllStudyMaterials></ViewAllStudyMaterials></StudentRoute>
-            },
-            // ✅ Private routes for tutor
-            {
-                path: 'create-session',
-                element: <TutorRoute><CreateSession></CreateSession></TutorRoute>
-            },
-            {
-                path: "view-my-sessions",
-                element: <TutorRoute><MyCreatedSessions></MyCreatedSessions></TutorRoute>
-            },
-            {
-                path: 'upload-materials',
-                element: <TutorRoute><UploadMaterials></UploadMaterials></TutorRoute>
-            },
-            {
-                path: 'view-all-materials',
-                element: <TutorRoute><ViewAllMaterials></ViewAllMaterials></TutorRoute>
-            },
-            // ✅ Private routes for admin
-            {
-                path: 'view-all-users',
-                element: <AdminRoute><ViewAllUsers></ViewAllUsers></AdminRoute>
-            },
-            {
-                path: 'view-all-sessions',
-                // Component: 
-                element: <AdminRoute><ViewAllSessions></ViewAllSessions></AdminRoute>
-            },
-            {
-                path: 'SessionUpdate/:id',
-                element: <AdminRoute><SessionUpdate></SessionUpdate></AdminRoute>
-            },
-            {
-                path: 'all-materials',
-                element: <AdminRoute><AllMaterials></AllMaterials></AdminRoute>
-            }
-        ]
-    },
-    {
-        path: "*",
+            children: [
+                {
+                    index: true,
+                    Component: DashboardHome
+                },
+                // ✅ Private routes for student
+                {
+                    path: "payment/:sessionId",
+                    element: <StudentRoute><Payment></Payment></StudentRoute>
+                },
+                {
+                    path: 'view-booked-session',
+                    element: <StudentRoute><ViewBookedSession></ViewBookedSession></StudentRoute>
+                },
+                {
+                    path: 'booked-session/:id',
+                    element: <StudentRoute><BookedSessionDetails></BookedSessionDetails></StudentRoute>
+                },
+                {
+                    path: 'create-note',
+                    element: <StudentRoute><CreateNote></CreateNote></StudentRoute>
+                },
+                {
+                    path: 'manage-personal-notes',
+                    element: <StudentRoute><ManagePersonalNotes></ManagePersonalNotes></StudentRoute>
+                },
+                {
+                    path: 'view-all-study-materials',
+                    element: <StudentRoute><ViewAllStudyMaterials></ViewAllStudyMaterials></StudentRoute>
+                },
+                // ✅ Private routes for tutor
+                {
+                    path: 'create-session',
+                    element: <TutorRoute><CreateSession></CreateSession></TutorRoute>
+                },
+                {
+                    path: "view-my-sessions",
+                    element: <TutorRoute><MyCreatedSessions></MyCreatedSessions></TutorRoute>
+                },
+                {
+                    path: 'upload-materials',
+                    element: <TutorRoute><UploadMaterials></UploadMaterials></TutorRoute>
+                },
+                {
+                    path: 'view-all-materials',
+                    element: <TutorRoute><ViewAllMaterials></ViewAllMaterials></TutorRoute>
+                },
+                // ✅ Private routes for admin
+                {
+                    path: 'view-all-users',
+                    element: <AdminRoute><ViewAllUsers></ViewAllUsers></AdminRoute>
+                },
+                {
+                    path: 'view-all-sessions',
+                    // Component: 
+                    element: <AdminRoute><ViewAllSessions></ViewAllSessions></AdminRoute>
+                },
+                {
+                    path: 'SessionUpdate/:id',
+                    element: <AdminRoute><SessionUpdate></SessionUpdate></AdminRoute>
+                },
+                {
+                    path: 'all-materials',
+                    element: <AdminRoute><AllMaterials></AllMaterials></AdminRoute>
+                }
+            ]
+},
+{
+    path: "*",
         Component: ErrorPage
-    }
+}
 ]);

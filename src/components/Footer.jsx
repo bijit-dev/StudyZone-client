@@ -26,10 +26,10 @@ const Footer = () => {
                 <div>
                     <h3 className="text-lg font-semibold text-white mb-3">Follow Us</h3>
                     <div className="flex space-x-4">
-                        <a href="#" className="hover:text-white"><FaFacebookF /></a>
-                        <a href="#" className="hover:text-white"><FaTwitter /></a>
-                        <a href="#" className="hover:text-white"><FaInstagram /></a>
-                        <a href="#" className="hover:text-white"><FaLinkedin /></a>
+                        <a href="https://www.facebook.com/" className="hover:text-white"><FaFacebookF /></a>
+                        <a href="https://x.com/" className="hover:text-white"><FaTwitter /></a>
+                        <a href="https://www.instagram.com/" className="hover:text-white"><FaInstagram /></a>
+                        <a href="https://www.linkedin.com/" className="hover:text-white"><FaLinkedin /></a>
                     </div>
                 </div>
             </div>
